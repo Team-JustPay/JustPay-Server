@@ -1,0 +1,22 @@
+{
+  "name": "Pocalink-Server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Team-PocaLink/Pocalink-Client.git",
+  "author": "<ho723@naver.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc && node dist"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.6.1",
+    "express": "^4.18.2",
+    "prisma": "^4.6.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "nodemon": "^2.0.20"
+  }
+}

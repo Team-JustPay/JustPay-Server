@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  uid             String         @id @default(uuid())
+  name            String         @db.VarChar(100)
+  email           String         @db.VarChar(100)
+  profileImageUrl String
+  pins            Pin[]
+  boards          Board[]
+  followings      UserRelation[] @relation("followings")
+  followers       UserRelation[] @relation("followers")
+}
+
+model Pin {
+  uid       String     @id @default(uuid())
+  creator   User       @relation(fields: [creatorId], references: [uid])
+  creatorId String
+  title     String     @db.VarChar(100)
+  imageUrl  String
+  boards    BoardPin[]
+  notes     NotePin[]
+}
+
+model Board {
+  uid    String     @id @default(uuid())
+  user   User       @relation(fields: [userId], references: [uid])
+  userId String
+  title  String     @db.VarChar(100)
+  notes  Note[]
+  pins   BoardPin[]
+}
+
+model Note {
+  uid         String    @id @default(uuid())
+  board       Board     @relation(fields: [boardId], references: [uid])
+  boardId     String
+  title       String    @db.VarChar(100)
+  description String
+  date        DateTime  @db.Date
+  pins        NotePin[]
+}
+
+model BoardPin {
+  uid     String @id @default(uuid())
+  board   Board  @relation(fields: [boardId], references: [uid])
+  boardId String
+  pin     Pin    @relation(fields: [pinId], references: [uid])
+  pinId   String
+}
+
+model NotePin {
+  uid    String @id @default(uuid())
+  note   Note   @relation(fields: [noteId], references: [uid])
+  noteId String
+  pin    Pin    @relation(fields: [pinId], references: [uid])
+  pinId  String
+}
+
+model UserRelation {
+  uid         String @id @default(uuid())
+  follower    User   @relation("followings", fields: [followerId], references: [uid])
+  followerId  String
+  following   User   @relation("followers", fields: [followingId], references: [uid])
+  followingId String
+}
