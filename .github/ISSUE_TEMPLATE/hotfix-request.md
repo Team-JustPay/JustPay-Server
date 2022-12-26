@@ -1,8 +1,8 @@
 ---
-name: HotFix request
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
+name: HOTFIX 생성/등록
+about: 핫픽스 가자!
+title: "[HOTFIX] HOTFIX 항목 상세"
+labels: hotfix
 assignees: ''
 
 ---
