@@ -1,5 +1,3 @@
-const pinController = {
-
-};
+const pinController = {};
 
 export default pinController;

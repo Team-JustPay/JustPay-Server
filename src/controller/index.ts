@@ -1,5 +1,5 @@
-import userController from "./userController";
-import boardController from "./boardController";
-import pinController from "./pinController";
+import boardController from './boardController';
+import pinController from './pinController';
+import userController from './userController';
 
-export {userController, boardController, pinController};
+export { userController, boardController, pinController };

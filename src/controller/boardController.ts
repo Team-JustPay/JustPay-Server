@@ -1,5 +1,3 @@
-const boardController = {
-
-};
+const boardController = {};
 
 export default boardController;

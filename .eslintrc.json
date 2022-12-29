@@ -1,0 +1,72 @@
+    {
+        "env": {
+          "es2021": true,
+          "node": true
+        },
+        "extends": [
+          "eslint:recommended",
+          "plugin:@typescript-eslint/eslint-recommended",
+          "plugin:@typescript-eslint/recommended",
+          "plugin:@typescript-eslint/recommended-requiring-type-checking",
+          "plugin:prettier/recommended",
+          "prettier/prettier",
+          "plugin:import/recommended"
+        ],
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+          "project": "./tsconfig.json",
+          "ecmaVersion": "latest",
+          "sourceType": "module"
+        },
+        "plugins": ["@typescript-eslint", "prettier"],
+        "rules": {
+          "camelcase": "error",
+          "comma-dangle": ["error", "always-multiline"],
+          "no-console": ["warn"],
+          "no-constant-condition": ["error", { "checkLoops": true }],
+          "no-restricted-syntax": [
+            "error",
+            {
+              "selector": "ForOfStatement",
+              "message": "iterators/generators require regenerator-runtime, which is too heavyweight for this guide to allow them. Separately, loops should be avoided in favor of array iterations."
+            },
+            {
+              "selector": "LabeledStatement",
+              "message": "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
+            },
+            {
+              "selector": "WithStatement",
+              "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
+            }
+          ],
+          "no-use-before-define": ["error", { "functions": false }],
+          "no-unused-expressions": ["error", { "allowTaggedTemplates": true }],
+          "prefer-const": [
+            "error",
+            { "destructuring": "all" }
+          ],
+          "prefer-destructuring": ["error", { "array": true, "object": true }, { "enforceForRenamedProperties": true }],
+          "spaced-comment": ["error", "always"],
+          "import/extensions": ["error", "never"],
+          "import/no-unresolved": "off",
+          "import/order": [
+            "error",
+            {
+              "groups": [
+                "builtin",
+                "external",
+                "internal",
+                "parent",
+                "sibling"
+              ],
+              "newlines-between": "always",
+              "alphabetize": {
+                "order": "asc",
+                "caseInsensitive": false
+              }
+            }
+          ],
+          "import/prefer-default-export": "off"
+        },
+        "ignorePatterns": ["dist/", "node_modules/"]
+      }

@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
-import { userService } from "../service";
+import { Request, Response } from 'express';
+
+import { userService } from '../service';
 
 const getUserById = () => {};
 

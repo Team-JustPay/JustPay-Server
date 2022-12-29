@@ -1,6 +1,5 @@
-import userService from "./userService"
-import boardService from "./boardService"
-import pinService from "./pinService"
+import boardService from './boardService';
+import pinService from './pinService';
+import userService from './userService';
 
-export { userService, boardService, pinService}
-
+export { userService, boardService, pinService };
