@@ -71,7 +71,6 @@ model SalesPost {
   sellorId          Int
   certifications    Certification[]
   purchaseSuggests  PurchaseSuggest[]
-  shippingOptionId  Int?
   ShippingOptions   ShippingOption[]
 }
 
