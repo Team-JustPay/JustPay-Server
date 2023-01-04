@@ -1,5 +1,2 @@
-import boardController from './boardController';
-import pinController from './pinController';
-import userController from './userController';
-
-export { userController, boardController, pinController };
+export { default as userController } from './userController';
+export { default as salespostController } from './imageController';

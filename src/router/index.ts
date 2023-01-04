@@ -1,13 +1,15 @@
 import { Router } from 'express';
 
-import boardRouter from './boardRouter';
-import pinRouter from './pinRouter';
+import authRouter from './authRouter';
+import salespostRouter from './salespostRouter';
+import suggestRouter from './suggestRouter';
 import userRouter from './userRouter';
 
 const router: Router = Router();
 
-router.use('/user', userRouter);
-router.use('/pins', pinRouter);
-router.use('/boards', boardRouter);
+router.use('/users', userRouter);
+router.use('/salesposts', salespostRouter);
+router.use('/suggests', suggestRouter);
+router.use('/auth', authRouter);
 
 export default router;

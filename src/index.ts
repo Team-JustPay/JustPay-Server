@@ -1,4 +1,3 @@
-// src/index.ts
 import express, { NextFunction, Request, Response } from 'express';
 
 import router from './router';
@@ -14,7 +13,7 @@ app.use('/', router); // use -> 모든 요청
 
 //* HTTP method - GET
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.send('마! 이게 서버다!');
+  res.send('마! 이게 서버다!!!!!!!!!!!!!!!!!!!!');
 });
 
 app.listen(PORT, () => {
