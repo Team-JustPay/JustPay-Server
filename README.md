@@ -214,20 +214,20 @@ API
 
 ```
 src
+├── config
+│   └── index.ts
 ├── controller
-│   ├── boardController.ts
-│   ├── index.ts
-│   ├── pinController.ts
-│   └── userController.ts
+│   └── index.ts
 ├── index.ts
+├── interfaces
+│   ├── common
+│   │   └── index.ts
+│   └── image
+│       └── imageCreateResponseDTO.ts
+├── middlewares
+│   └── index.ts
 ├── router
-│   ├── boardRouter.ts
-│   ├── index.ts
-│   ├── pinRouter.ts
-│   └── userRouter.ts
+│   └── index.ts
 └── service
-    ├── boardService.ts
-    ├── index.ts
-    ├── pinService.ts
-    └── userService.ts
+    └── index.ts
 ```
