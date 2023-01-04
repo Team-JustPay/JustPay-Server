@@ -213,21 +213,43 @@ API
 ## 🏛 프로젝트 폴더 구조
 
 ```
+prisma
 src
 ├── config
-│   └── index.ts
+│   ├── index.ts
+│   └── s3Config.ts
 ├── controller
-│   └── index.ts
+│   ├── authController.ts
+│   ├── index.ts
+│   ├── salespostController.ts
+│   ├── suggestController.ts
+│   └── userController.ts
 ├── index.ts
 ├── interfaces
 │   ├── common
-│   │   └── index.ts
+│   │   ├── index.ts
+│   │   ├── response.ts
+│   │   ├── responseMessage.ts
+│   │   ├── statusCode.ts
+│   │   └── tokenType.ts
 │   └── image
 │       └── imageCreateResponseDTO.ts
 ├── middlewares
-│   └── index.ts
+│   ├── auth.ts
+│   ├── index.ts
+│   └── upload.ts
+├── modules
+│   └── jwtHandler.ts
 ├── router
-│   └── index.ts
+│   ├── authRouter.ts
+│   ├── index.ts
+│   ├── salespostRouter.ts
+│   ├── suggestRouter.ts
+│   └── userRouter.ts
 └── service
-    └── index.ts
+    ├── authService.ts
+    ├── index.ts
+    ├── salespostService.ts
+    ├── suggestService.ts
+    └── userService.ts
 ```
