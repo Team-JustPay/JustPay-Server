@@ -18,6 +18,7 @@
 </br>
 
 ## ✏️ DB ERD
+<img width="1481" alt="스크린샷 2023-01-04 오후 3 57 17" src="https://user-images.githubusercontent.com/67372977/210506846-e9329f15-7ed5-4a8c-a5b1-594ef4aa4f58.png">
 
 
 ## 📕 Cloud Service
@@ -45,7 +46,7 @@
 </br>
 
 
-## 담당 기능 및 Progess Status
+## ✏️ 담당 기능 및 Progess Status
 
 초기 세팅 및 
 
