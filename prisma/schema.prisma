@@ -11,65 +11,103 @@ datasource db {
 }
 
 model User {
-  uid             String         @id @default(uuid())
-  name            String         @db.VarChar(100)
-  email           String         @db.VarChar(100)
-  profileImageUrl String
-  pins            Pin[]
-  boards          Board[]
-  followings      UserRelation[] @relation("followings")
-  followers       UserRelation[] @relation("followers")
+  id                Int               @id @default(autoincrement())
+  email             String            @db.VarChar(100)
+  nickName          String            @db.VarChar(100)
+  profileImageUrl   String
+  socialId          String            @db.VarChar(100)
+  phoneNumber       String?           @db.VarChar(100)
+  accountNumber     String?           @db.VarChar(100)
+  dealCount         Int               @default(0)
+  saleCount         Int               @default(0)
+  saleMoney         Int               @default(0)
+  purchaseCount     Int               @default(0)
+  purchaseMoney     Int               @default(0)
+  openChatUrl       String?           @db.VarChar(100)
+  twitterMessageUrl String?           @db.VarChar(100)
+  password          String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  notifications     Notification[]
+  shippingInfo      ShippingInfo?
+  salesPosts        SalesPost[]
+  purchaseSuggests  PurchaseSuggest[]
 }
 
-model Pin {
-  uid       String     @id @default(uuid())
-  creator   User       @relation(fields: [creatorId], references: [uid])
-  creatorId String
-  title     String     @db.VarChar(100)
-  imageUrl  String
-  boards    BoardPin[]
-  notes     NotePin[]
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
-model Board {
-  uid    String     @id @default(uuid())
-  user   User       @relation(fields: [userId], references: [uid])
-  userId String
-  title  String     @db.VarChar(100)
-  notes  Note[]
-  pins   BoardPin[]
+model ShippingInfo {
+  id           Int      @id @default(autoincrement())
+  receiverName String?  @db.VarChar(100)
+  address      String?  @db.VarChar(100)
+  cuStoreName  String?  @db.VarChar(100)
+  gsStoreName  String?  @db.VarChar(100)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int      @unique
 }
 
-model Note {
-  uid         String    @id @default(uuid())
-  board       Board     @relation(fields: [boardId], references: [uid])
-  boardId     String
-  title       String    @db.VarChar(100)
-  description String
-  date        DateTime  @db.Date
-  pins        NotePin[]
+model SalesPost {
+  id                Int               @id @default(autoincrement())
+  mainImageUrl      String
+  productCount      Int
+  salesOption       Int?
+  priceOption       Int
+  price             Int
+  certificationWord String            @db.VarChar(100)
+  description       String
+  status            Int               @default(0)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  sellor            User              @relation(fields: [sellorId], references: [id])
+  sellorId          Int
+  certifications    Certification[]
+  purchaseSuggests  PurchaseSuggest[]
+  shippingOptionId  Int?
+  ShippingOptions   ShippingOption[]
 }
 
-model BoardPin {
-  uid     String @id @default(uuid())
-  board   Board  @relation(fields: [boardId], references: [uid])
-  boardId String
-  pin     Pin    @relation(fields: [pinId], references: [uid])
-  pinId   String
+model Certification {
+  id          Int       @id @default(autoincrement())
+  imageUrl    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  salespost   SalesPost @relation(fields: [salesPostId], references: [id])
+  salesPostId Int
 }
 
-model NotePin {
-  uid    String @id @default(uuid())
-  note   Note   @relation(fields: [noteId], references: [uid])
-  noteId String
-  pin    Pin    @relation(fields: [pinId], references: [uid])
-  pinId  String
+model ShippingOption {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique @db.VarChar(100)
+  price            Int
+  purchaseSuggests PurchaseSuggest[]
+  salesPosts       SalesPost[]
 }
 
-model UserRelation {
-  uid         String @id @default(uuid())
-  follower    User   @relation("followings", fields: [followerId], references: [uid])
-  followerId  String
-  following   User   @relation("followers", fields: [followingId], references: [uid])
-  followingId String
+model PurchaseSuggest {
+  id               Int            @id @default(autoincrement())
+  imageUrl         String
+  price            Int
+  salesOption      Int?
+  status           Int            @default(0)
+  productCount     Int
+  description      String
+  invoiceDeadline  Int?
+  invoiceNumber    String?        @db.VarChar(100)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  salesPost        SalesPost      @relation(fields: [salesPostId], references: [id])
+  salesPostId      Int
+  suggester        User           @relation(fields: [suggesterId], references: [id])
+  suggesterId      Int
+  shippingOption   ShippingOption @relation(fields: [shippingOptionId], references: [id])
+  shippingOptionId Int
 }
