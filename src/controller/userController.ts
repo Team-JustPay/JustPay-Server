@@ -8,9 +8,7 @@ import jwtHandler from '../modules/jwtHandler';
 const signInUser = async (req: Request, res: Response) => {
   try {
     const userId = 4; // 더미 유저의 id
-    console.log('access token 발급 시작');
     const accessToken = jwtHandler.sign(userId);
-    console.log(accessToken);
 
     const result = {
       id: userId,

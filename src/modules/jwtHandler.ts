@@ -9,16 +9,10 @@ const sign = (userId: number) => {
     userId,
   };
 
-  console.log('sign 시작');
-  try {
-    const accessToken = jwt.sign(payload, process.env.JWT_SECRET as string, {
-      expiresIn: '365d',
-    });
-    return accessToken;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
+  const accessToken = jwt.sign(payload, process.env.JWT_SECRET as string, {
+    expiresIn: '365d',
+  });
+  return accessToken;
 };
 
 //* token 검사!
