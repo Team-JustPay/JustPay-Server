@@ -22,6 +22,7 @@
           "camelcase": "error",
           "comma-dangle": ["error", "always-multiline"],
           "no-console": ["warn"],
+          "@typescript-eslint/no-var-requires": "off",
           "no-constant-condition": ["error", { "checkLoops": true }],
           "no-restricted-syntax": [
             "error",
