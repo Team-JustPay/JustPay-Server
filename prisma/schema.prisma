@@ -95,7 +95,7 @@ model PurchaseSuggest {
   id               Int            @id @default(autoincrement())
   imageUrl         String
   price            Int
-  salesOption      Int?
+  purchaseOption   Int
   status           Int            @default(0)
   productCount     Int
   description      String
