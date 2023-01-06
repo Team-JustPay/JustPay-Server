@@ -11,5 +11,6 @@ router.post(
   upload.single('image'),
   salespostController.createSuggest,
 );
+router.get('/certificationWord', salespostController.createCertificationWord);
 
 export default router;
