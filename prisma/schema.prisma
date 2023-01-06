@@ -59,8 +59,8 @@ model SalesPost {
   id                Int               @id @unique @default(autoincrement())
   mainImageUrl      String
   productCount      Int
-  salesOption       String?
-  priceOption       String
+  salesOption       String?           @db.VarChar(100)
+  priceOption       String            @db.VarChar(100)
   price             Int
   certificationWord String            @db.VarChar(100)
   description       String
@@ -95,7 +95,7 @@ model PurchaseSuggest {
   id               Int            @id @unique @default(autoincrement())
   imageUrl         String
   price            Int
-  purchaseOption   String
+  purchaseOption   String         @db.VarChar(100)
   status           Int            @default(0)
   productCount     Int
   description      String
