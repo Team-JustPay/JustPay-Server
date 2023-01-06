@@ -17,7 +17,6 @@ const signInUser = async (req: Request, res: Response) => {
 
     res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
   } catch (e) {
-    // console.log(error);
     // ? 서버 내부에서 오류 발생
     res
       .status(sc.INTERNAL_SERVER_ERROR)

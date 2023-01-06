@@ -1,13 +1,41 @@
 import { Request, Response } from 'express';
 
+import { Request, Response } from 'express';
+
 import { rm, sc } from '../constants';
 import { fail, success } from '../constants/response';
-import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
+import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
 import { salespostService } from '../service';
+const salespostCreate = async (req: Request, res: Response) => {
+  const { mainImage, certifications } = req.files as any;
 
+  const image = mainImage[0];
+  const { location } = image;
+  const locations = certifications.map((file: { location: any }) => file.location);
+
+  if (!location || !locations) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
+  }
+
+  const { userId } = res.locals; // jwt로 userId얻기
+  const salesPostCreateDTO: SalesPostCreateDTO = req.body;
+
+  const salespost = await salespostService.createSalespost(
+    userId,
+    location,
+    locations,
+    salesPostCreateDTO,
+  );
+
+  return res.status(201).json({ status: 201, message: '판매글 생성 성공', data: salespost });
+};
+
+const salespostController = { salespostCreate };
+
+import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 const createSuggest = async (req: Request, res: Response) => {
-  const { salespostId } = req.params;
   const { userId } = res.locals;
+  const { salespostId } = req.params;
   const suggestCreateDTO: SuggestCreateDTO = req.body;
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
   const location = image ? image.location : '';
@@ -24,8 +52,8 @@ const createSuggest = async (req: Request, res: Response) => {
   }
 
   return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_SUGGEST_SUCCESS, data));
-};
 
+};
 const salespostController = { createSuggest };
 
 export default salespostController;
