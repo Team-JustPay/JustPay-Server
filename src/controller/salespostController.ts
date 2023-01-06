@@ -36,6 +36,10 @@ const createSuggest = async (req: Request, res: Response) => {
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
   const location = image ? image.location : '';
 
+  if (!salespostId) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CREATE_SUGGEST_FAIL));
+  }
+
   const data = await salespostService.createSuggest(
     userId,
     Number(salespostId),
