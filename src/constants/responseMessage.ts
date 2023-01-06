@@ -30,4 +30,6 @@ export default {
 
   // 서버 내 오류
   INTERNAL_SERVER_ERROR: '서버 내 오류',
+
+  NO_IMAGE: '이미지 없음',
 };
