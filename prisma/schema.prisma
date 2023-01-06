@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,25 +13,25 @@ datasource db {
 model User {
   id                Int               @id @unique @default(autoincrement())
   email             String            @db.VarChar(100)
-  accountNumber     String?           @db.VarChar(100)
-  createdAt         DateTime          @default(now())
-  dealCount         Int               @default(0)
   nickName          String            @db.VarChar(100)
-  openChatUrl       String?           @db.VarChar(100)
-  password          String
-  phoneNumber       String?           @db.VarChar(100)
   profileImageUrl   String
-  purchaseCount     Int               @default(0)
-  purchaseMoney     Int               @default(0)
+  socialId          String            @db.VarChar(100)
+  phoneNumber       String?           @db.VarChar(100)
+  accountNumber     String?           @db.VarChar(100)
+  dealCount         Int               @default(0)
   saleCount         Int               @default(0)
   saleMoney         Int               @default(0)
-  socialId          String            @db.VarChar(100)
+  purchaseCount     Int               @default(0)
+  purchaseMoney     Int               @default(0)
+  openChatUrl       String?           @db.VarChar(100)
   twitterMessageUrl String?           @db.VarChar(100)
+  password          String
+  createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   notifications     Notification[]
-  purchaseSuggests  PurchaseSuggest[]
-  salesPosts        SalesPost[]
   shippingInfo      ShippingInfo?
+  salesPosts        SalesPost[]
+  purchaseSuggests  PurchaseSuggest[]
 }
 
 model Notification {
@@ -36,8 +39,8 @@ model Notification {
   message   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    Int
   user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model ShippingInfo {
@@ -48,27 +51,27 @@ model ShippingInfo {
   gsStoreName  String?  @db.VarChar(100)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  userId       Int      @unique
   user         User     @relation(fields: [userId], references: [id])
+  userId       Int      @unique
 }
 
 model SalesPost {
   id                Int               @id @unique @default(autoincrement())
   mainImageUrl      String
   productCount      Int
+  salesOption       String?
+  priceOption       String
   price             Int
   certificationWord String            @db.VarChar(100)
   description       String
   status            Int               @default(0)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
+  sellor            User              @relation(fields: [sellorId], references: [id])
   sellorId          Int
-  salesOption       Int?
-  priceOption       Int
   certifications    Certification[]
   purchaseSuggests  PurchaseSuggest[]
-  sellor            User              @relation(fields: [sellorId], references: [id])
-  ShippingOptions   ShippingOption[]  @relation("SalesPostToShippingOption")
+  ShippingOptions   ShippingOption[]
 }
 
 model Certification {
@@ -76,8 +79,8 @@ model Certification {
   imageUrl    String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  salesPostId Int
   salespost   SalesPost @relation(fields: [salesPostId], references: [id])
+  salesPostId Int
 }
 
 model ShippingOption {
@@ -85,25 +88,25 @@ model ShippingOption {
   name             String            @unique @db.VarChar(100)
   price            Int
   purchaseSuggests PurchaseSuggest[]
-  salesPosts       SalesPost[]       @relation("SalesPostToShippingOption")
+  salesPosts       SalesPost[]
 }
 
 model PurchaseSuggest {
   id               Int            @id @unique @default(autoincrement())
   imageUrl         String
   price            Int
+  purchaseOption   String
   status           Int            @default(0)
   productCount     Int
   description      String
+  invoiceDeadline  DateTime       @db.Date
   invoiceNumber    String?        @db.VarChar(100)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
-  salesPostId      Int
-  suggesterId      Int
-  shippingOptionId Int
-  purchaseOption   Int
-  invoiceDeadline  Int?
   salesPost        SalesPost      @relation(fields: [salesPostId], references: [id])
-  shippingOption   ShippingOption @relation(fields: [shippingOptionId], references: [id])
+  salesPostId      Int
   suggester        User           @relation(fields: [suggesterId], references: [id])
+  suggesterId      Int
+  shippingOption   ShippingOption @relation(fields: [shippingOptionId], references: [id])
+  shippingOptionId Int
 }
