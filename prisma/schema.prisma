@@ -59,8 +59,8 @@ model SalesPost {
   id                Int               @id @default(autoincrement())
   mainImageUrl      String
   productCount      Int
-  salesOption       Int?
-  priceOption       Int
+  salesOption       String?
+  priceOption       String
   price             Int
   certificationWord String            @db.VarChar(100)
   description       String
@@ -95,11 +95,11 @@ model PurchaseSuggest {
   id               Int            @id @default(autoincrement())
   imageUrl         String
   price            Int
-  purchaseOption   Int
+  purchaseOption   String
   status           Int            @default(0)
   productCount     Int
   description      String
-  invoiceDeadline  Int?
+  invoiceDeadline  DateTime       @db.Date
   invoiceNumber    String?        @db.VarChar(100)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
