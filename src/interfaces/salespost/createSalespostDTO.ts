@@ -1,4 +1,4 @@
-export interface SalesPostCreateDTO {
+export interface CreateSalespostDTO {
   productCount: string;
   salesOption: string;
   priceOption: string;

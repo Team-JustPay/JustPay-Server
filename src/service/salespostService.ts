@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
+import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import getShippingOptionId from '../modules/shippingOption';
 
@@ -10,7 +10,7 @@ const createSalespost = async (
   userId: number,
   location: string,
   locations: string[],
-  salesPostCreateDTO: SalesPostCreateDTO,
+  salesPostCreateDTO: CreateSalespostDTO,
 ) => {
   const shippingOptions = JSON.parse(salesPostCreateDTO.shippingOptions);
 
