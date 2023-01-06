@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
+import { wordList } from '../constants/wordList';
 import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import getShippingOptionId from '../modules/shippingOption';
@@ -82,6 +83,18 @@ const createSuggest = async (
   return data;
 };
 
-const salespostService = { createSuggest, createSalespost };
+const createCertificationWord = async () => {
+  const randomWord = Array.from(Array(2), () => wordList[Math.floor(Math.random() * 40)]);
+  const randomNumber = Array.from(Array(4), () => Math.floor(Math.random() * 10));
+
+  const certificationWord = randomWord.join('') + randomNumber.join('');
+
+  const data = {
+    certificationWord,
+  };
+
+  return data;
+};
+const salespostService = { createSuggest, createSalespost, createCertificationWord };
 
 export default salespostService;
