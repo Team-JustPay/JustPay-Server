@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
 import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
-import getShippingOptionId from '../modules/shippingOption';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
+import getShippingOptionId from '../modules/shippingOption';
 
 const prisma = new PrismaClient();
 
@@ -49,12 +49,6 @@ const createSalespost = async (
   return salespost;
 };
 
-const salespostService = {
-  createSalespost,
-};
-
-export default salespostService;
-
 const createSuggest = async (
   userId: number,
   salespostId: number,
@@ -88,6 +82,6 @@ const createSuggest = async (
   return data;
 };
 
-const salespostService = { createSuggest };
+const salespostService = { createSuggest, createSalespost };
 
 export default salespostService;

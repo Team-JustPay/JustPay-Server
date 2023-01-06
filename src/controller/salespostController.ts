@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 
-import { Request, Response } from 'express';
-
 import { rm, sc } from '../constants';
 import { fail, success } from '../constants/response';
 import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
+import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import { salespostService } from '../service';
 const salespostCreate = async (req: Request, res: Response) => {
   const { mainImage, certifications } = req.files as any;
@@ -30,9 +29,6 @@ const salespostCreate = async (req: Request, res: Response) => {
   return res.status(201).json({ status: 201, message: '판매글 생성 성공', data: salespost });
 };
 
-const salespostController = { salespostCreate };
-
-import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 const createSuggest = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { salespostId } = req.params;
@@ -52,8 +48,7 @@ const createSuggest = async (req: Request, res: Response) => {
   }
 
   return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_SUGGEST_SUCCESS, data));
-
 };
-const salespostController = { createSuggest };
+const salespostController = { createSuggest, salespostCreate };
 
 export default salespostController;
