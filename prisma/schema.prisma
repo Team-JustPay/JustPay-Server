@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,102 +8,102 @@ datasource db {
 }
 
 model User {
-  id                Int               @id @default(autoincrement())
+  id                Int               @id @unique @default(autoincrement())
   email             String            @db.VarChar(100)
-  nickName          String            @db.VarChar(100)
-  profileImageUrl   String
-  socialId          String            @db.VarChar(100)
-  phoneNumber       String?           @db.VarChar(100)
   accountNumber     String?           @db.VarChar(100)
+  createdAt         DateTime          @default(now())
   dealCount         Int               @default(0)
-  saleCount         Int               @default(0)
-  saleMoney         Int               @default(0)
+  nickName          String            @db.VarChar(100)
+  openChatUrl       String?           @db.VarChar(100)
+  password          String
+  phoneNumber       String?           @db.VarChar(100)
+  profileImageUrl   String
   purchaseCount     Int               @default(0)
   purchaseMoney     Int               @default(0)
-  openChatUrl       String?           @db.VarChar(100)
+  saleCount         Int               @default(0)
+  saleMoney         Int               @default(0)
+  socialId          String            @db.VarChar(100)
   twitterMessageUrl String?           @db.VarChar(100)
-  password          String
-  createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   notifications     Notification[]
-  shippingInfo      ShippingInfo?
-  salesPosts        SalesPost[]
   purchaseSuggests  PurchaseSuggest[]
+  salesPosts        SalesPost[]
+  shippingInfo      ShippingInfo?
 }
 
 model Notification {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id @unique @default(autoincrement())
   message   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
   userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model ShippingInfo {
-  id           Int      @id @default(autoincrement())
+  id           Int      @id @unique @default(autoincrement())
   receiverName String?  @db.VarChar(100)
   address      String?  @db.VarChar(100)
   cuStoreName  String?  @db.VarChar(100)
   gsStoreName  String?  @db.VarChar(100)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id])
   userId       Int      @unique
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 model SalesPost {
-  id                Int               @id @default(autoincrement())
+  id                Int               @id @unique @default(autoincrement())
   mainImageUrl      String
   productCount      Int
-  salesOption       String?
-  priceOption       String
   price             Int
   certificationWord String            @db.VarChar(100)
   description       String
   status            Int               @default(0)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
-  sellor            User              @relation(fields: [sellorId], references: [id])
   sellorId          Int
+  salesOption       String?           @db.VarChar(100)
+  priceOption       String            @db.VarChar(100)
   certifications    Certification[]
   purchaseSuggests  PurchaseSuggest[]
-  ShippingOptions   ShippingOption[]
+  sellor            User              @relation(fields: [sellorId], references: [id])
+  ShippingOptions   ShippingOption[]  @relation("SalesPostToShippingOption")
 }
 
 model Certification {
-  id          Int       @id @default(autoincrement())
+  id          Int       @id @unique @default(autoincrement())
   imageUrl    String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  salespost   SalesPost @relation(fields: [salesPostId], references: [id])
   salesPostId Int
+  salespost   SalesPost @relation(fields: [salesPostId], references: [id])
 }
 
 model ShippingOption {
-  id               Int               @id @default(autoincrement())
+  id               Int               @id @unique @default(autoincrement())
   name             String            @unique @db.VarChar(100)
   price            Int
   purchaseSuggests PurchaseSuggest[]
-  salesPosts       SalesPost[]
+  salesPosts       SalesPost[]       @relation("SalesPostToShippingOption")
 }
 
 model PurchaseSuggest {
-  id               Int            @id @default(autoincrement())
+  id               Int            @id @unique @default(autoincrement())
   imageUrl         String
   price            Int
-  purchaseOption   String
   status           Int            @default(0)
   productCount     Int
   description      String
-  invoiceDeadline  DateTime       @db.Date
   invoiceNumber    String?        @db.VarChar(100)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
-  salesPost        SalesPost      @relation(fields: [salesPostId], references: [id])
   salesPostId      Int
-  suggester        User           @relation(fields: [suggesterId], references: [id])
   suggesterId      Int
-  shippingOption   ShippingOption @relation(fields: [shippingOptionId], references: [id])
   shippingOptionId Int
+  purchaseOption   String         @db.VarChar(100)
+  invoiceDeadline  DateTime?      @db.Date
+  salesPost        SalesPost      @relation(fields: [salesPostId], references: [id])
+  shippingOption   ShippingOption @relation(fields: [shippingOptionId], references: [id])
+  suggester        User           @relation(fields: [suggesterId], references: [id])
 }
