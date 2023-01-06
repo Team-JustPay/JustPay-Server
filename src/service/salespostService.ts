@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { wordList } from '../constants';
+import { wordList } from '../constants/wordList';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import getShippingOptionId from '../modules/shippingOption';
 const prisma = new PrismaClient();
@@ -39,16 +39,10 @@ const createSuggest = async (
 };
 
 const createCertificationWord = async () => {
-  const certificationList = [
-    wordList[Math.random() * 40],
-    wordList[Math.random() * 40],
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-    Math.random() * 10,
-  ];
+  const randomWord = Array.from(Array(2), () => wordList[Math.floor(Math.random() * 40)]);
+  const randomNumber = Array.from(Array(4), () => Math.floor(Math.random() * 10));
 
-  const certificationWord = certificationList.join(',');
+  const certificationWord = randomWord.join('') + randomNumber.join('');
 
   const data = {
     certificationWord,

@@ -28,7 +28,7 @@ const createSuggest = async (req: Request, res: Response) => {
 
 const createCertificationWord = async (req: Request, res: Response) => {
   const data = await salespostService.createCertificationWord();
-  return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_SUGGEST_SUCCESS, data));
+  return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_WORD_CREATE, data));
 };
 
 const salespostController = { createSuggest, createCertificationWord };

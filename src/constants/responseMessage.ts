@@ -34,4 +34,7 @@ export default {
 
   // 서버 내 오류
   INTERNAL_SERVER_ERROR: '서버 내 오류',
+
+  // 인증
+  CERTIFICATION_WORD_CREATE: '인증 코드 생성 성공',
 };

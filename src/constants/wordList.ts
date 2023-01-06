@@ -1,4 +1,4 @@
-export default [
+export const wordList = [
   '소금',
   '설탕',
   '후추',
