@@ -45,7 +45,7 @@
             "error",
             { "destructuring": "all" }
           ],
-          "prefer-destructuring": ["error", { "array": true, "object": true }, { "enforceForRenamedProperties": true }],
+          "prefer-destructuring": ["error", { "array": false, "object": false }, { "enforceForRenamedProperties": true }],
           "spaced-comment": ["error", "always"],
           "import/extensions": ["error", "never"],
           "import/no-unresolved": "off",
