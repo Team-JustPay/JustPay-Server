@@ -1,4 +1,4 @@
-import { create } from 'domain';
+import { Request, Response } from 'express';
 
 import { Request, Response } from 'express';
 
@@ -31,5 +31,29 @@ const salespostCreate = async (req: Request, res: Response) => {
 };
 
 const salespostController = { salespostCreate };
+
+import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
+const createSuggest = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
+  const { salespostId } = req.params;
+  const suggestCreateDTO: SuggestCreateDTO = req.body;
+  const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
+  const location = image ? image.location : '';
+
+  const data = await salespostService.createSuggest(
+    userId,
+    Number(salespostId),
+    suggestCreateDTO,
+    location,
+  );
+
+  if (!data) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CREATE_SUGGEST_FAIL));
+  }
+
+  return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_SUGGEST_SUCCESS, data));
+
+};
+const salespostController = { createSuggest };
 
 export default salespostController;

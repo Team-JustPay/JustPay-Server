@@ -1,8 +1,7 @@
 import { Router } from 'express';
 
 import { salespostController } from '../controller';
-import auth from '../middlewares/auth';
-import upload from '../middlewares/upload';
+import { auth, upload } from '../middlewares';
 
 const router: Router = Router();
 
@@ -14,6 +13,13 @@ router.post(
     { name: 'certifications', maxCount: 20 },
   ]),
   salespostController.salespostCreate,
+);
+
+router.post(
+  '/:salespostId/suggest',
+  auth,
+  upload.single('image'),
+  salespostController.createSuggest,
 );
 
 export default router;

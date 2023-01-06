@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
 import getShippingOptionId from '../modules/shippingOption';
+import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 
 const prisma = new PrismaClient();
 
@@ -51,5 +52,42 @@ const createSalespost = async (
 const salespostService = {
   createSalespost,
 };
+
+export default salespostService;
+
+const createSuggest = async (
+  userId: number,
+  salespostId: number,
+  suggestCreateDTO: SuggestCreateDTO,
+  location: string,
+) => {
+  const suggest = {
+    imageUrl: location,
+    price: Number(suggestCreateDTO.price),
+    purchaseOption: suggestCreateDTO.purchaseOption || 'BULK',
+    productCount: Number(suggestCreateDTO.productCount),
+    description: suggestCreateDTO.description,
+    salesPostId: salespostId,
+    suggesterId: userId,
+    shippingOptionId: (await getShippingOptionId(suggestCreateDTO.shippingOption)) || 0,
+  };
+
+  if (suggest.imageUrl === '') {
+    const salesPost = await prisma.salesPost.findUnique({
+      where: {
+        id: salespostId,
+      },
+    });
+    suggest.imageUrl = salesPost?.mainImageUrl || '';
+  }
+
+  const data = await prisma.purchaseSuggest.create({
+    data: suggest,
+  });
+
+  return data;
+};
+
+const salespostService = { createSuggest };
 
 export default salespostService;
