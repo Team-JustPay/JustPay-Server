@@ -7,11 +7,7 @@ import { fail, success } from '../constants/response';
 import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
 import { salespostService } from '../service';
 const salespostCreate = async (req: Request, res: Response) => {
-  // console.log('start');
-  // const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
   const { mainImage, certifications } = req.files as any;
-  // console.log(mainImage);
-  // console.log(certifications);
 
   const image = mainImage[0];
   const { location } = image;
