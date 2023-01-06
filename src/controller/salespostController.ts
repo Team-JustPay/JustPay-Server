@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 import { rm, sc } from '../constants';
 import { fail, success } from '../constants/response';
 import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
-import { SalespostService } from '../service';
+import { salespostService } from '../service';
 const salespostCreate = async (req: Request, res: Response) => {
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
   const { location } = image;
@@ -17,7 +17,7 @@ const salespostCreate = async (req: Request, res: Response) => {
   const { userId } = res.locals; // jwt로 userId얻기
   const salesPostCreateDTO: SalesPostCreateDTO = req.body;
 
-  const data = await SalespostService.createSalespost(userId, location, salesPostCreateDTO);
+  const data = await salespostService.createSalespost(userId, location, salesPostCreateDTO);
   // console.log(data);
   //   // req body type 변경
   //   productCount = parseInt(productCount);

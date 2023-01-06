@@ -1,3 +1,3 @@
-const SuggestService = {};
+const suggestService = {};
 
-export default SuggestService;
+export default suggestService;

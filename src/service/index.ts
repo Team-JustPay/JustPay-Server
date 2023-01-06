@@ -1,4 +1,4 @@
-export { default as SalespostService } from './salespostService';
-export { default as SuggestService } from './suggestService';
-export { default as UserService } from './userService';
-export { default as AuthService } from './AuthService';
+export { default as salespostService } from './salespostService';
+export { default as suggestService } from './suggestService';
+export { default as userService } from './userService';
+export { default as authService } from './authService';

@@ -37,8 +37,8 @@ const createSalespost = async (
   return salespost;
 };
 
-const SalespostService = {
+const salespostService = {
   createSalespost,
 };
 
-export default SalespostService;
+export default salespostService;
