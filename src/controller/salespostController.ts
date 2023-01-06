@@ -2,9 +2,10 @@ import { Request, Response } from 'express';
 
 import { rm, sc } from '../constants';
 import { fail, success } from '../constants/response';
-import { SalesPostCreateDTO } from '../interfaces/salespost/salespostcreateDTO';
+import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import { salespostService } from '../service';
+
 const salespostCreate = async (req: Request, res: Response) => {
   const { mainImage, certifications } = req.files as any;
 
@@ -17,7 +18,7 @@ const salespostCreate = async (req: Request, res: Response) => {
   }
 
   const { userId } = res.locals; // jwt로 userId얻기
-  const salesPostCreateDTO: SalesPostCreateDTO = req.body;
+  const salesPostCreateDTO: CreateSalespostDTO = req.body;
 
   const salespost = await salespostService.createSalespost(
     userId,
