@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
-import { rm, sc } from '../interfaces/common';
-import { fail } from '../interfaces/common/response';
-import tokenType from '../interfaces/common/tokenType';
+import { rm, sc } from '../constants';
+import { fail } from '../constants/response';
+import tokenType from '../constants/tokenType';
 import jwtHandler from '../modules/jwtHandler';
 
 export default async (req: Request, res: Response, next: NextFunction) => {

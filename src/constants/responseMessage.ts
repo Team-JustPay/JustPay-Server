@@ -7,7 +7,7 @@ export default {
   // 회원가입 및 로그인
   SIGNUP_SUCCESS: '회원 가입 성공',
   SIGNUP_FAIL: '회원 가입 실패',
-  SIGNIN_SUCCESS: '로그인 성공',
+  SIGNIN_SUCCESS: '유저 로그인/회원가입 성공',
   SIGNIN_FAIL: '로그인 실패',
   ALREADY_NICKNAME: '이미 사용중인 닉네임입니다.',
   INVALID_PASSWORD: '잘못된 비밀번호입니다.',
@@ -19,13 +19,6 @@ export default {
   DELETE_USER_SUCCESS: '유저 탈퇴 성공',
   DELETE_USER_FAIL: '유저 탈퇴 실패',
   NO_USER: '탈퇴했거나 가입하지 않은 유저입니다.',
-  SEARCH_USER_FAIL: '유저 탐색 실패',
-  SEARCH_USER_SUCCESS: '유저 탐색 성공',
-
-  // 이미지
-  NO_IMAGE: '이미지가 없습니다.',
-  CREATE_IMAGE_SUCCESS: '이미지 저장 성공',
-  CREATE_IMAGE_FAIL: '이미지 저장 실패',
 
   // 토큰
   CREATE_TOKEN_SUCCESS: '토큰 재발급 성공',
