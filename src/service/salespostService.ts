@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 const createSalespost = async (
   userId: number,
   location: string,
+  locations: string[],
   salesPostCreateDTO: SalesPostCreateDTO,
 ) => {
   const shippingOptions = JSON.parse(salesPostCreateDTO.shippingOptions);
@@ -16,6 +17,11 @@ const createSalespost = async (
   for (const option of shippingOptions) {
     const optionId = await getShippingOptionId(option);
     shippingOptionIds.push({ id: optionId });
+  }
+
+  const certificationIds = [];
+  for (const location of locations) {
+    certificationIds.push({ imageUrl: location });
   }
 
   const salespost = await prisma.salesPost.create({
@@ -30,6 +36,11 @@ const createSalespost = async (
       description: salesPostCreateDTO.description,
       ShippingOptions: {
         connect: shippingOptionIds,
+      },
+      certifications: {
+        createMany: {
+          data: certificationIds,
+        },
       },
     },
   });
