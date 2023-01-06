@@ -17,44 +17,9 @@ const salespostCreate = async (req: Request, res: Response) => {
   const { userId } = res.locals; // jwt로 userId얻기
   const salesPostCreateDTO: SalesPostCreateDTO = req.body;
 
-  const data = await salespostService.createSalespost(userId, location, salesPostCreateDTO);
-  // console.log(data);
-  //   // req body type 변경
-  //   productCount = parseInt(productCount);
-  //   price = parseInt(price);
+  const salespost = await salespostService.createSalespost(userId, location, salesPostCreateDTO);
 
-  //   // test 필요(thunder client에서 안해봄)
-  //   shippingOptions = JSON.parse(shippingOptions);
-  //   // shippingOptions = ['반값택배', '끼리택배'];
-
-  //   createSalespost();
-
-  //   console.log(userId);
-  //   console.log(Array.isArray(shippingOptions));
-  //   console.log(
-  //     productCount,
-  //     typeof productCount,
-  //     salesOption,
-  //     typeof salesOption,
-  //     priceOption,
-  //     typeof priceOption,
-  //     price,
-  //     typeof price,
-  //     certificationWord,
-  //     typeof certificationWord,
-  //     description,
-  //     typeof description,
-  //     shippingOptions,
-  //     typeof shippingOptions,
-  //   );
-
-  // const data = await userService.getUserById(+userId);
-  return res.status(200).json({ status: 200, message: '유저 조회 성공' });
-
-  //   if (!data) {
-  //     return res.status(404).json({ status: 404, message: 'NOT_FOUND' });
-  //   }
-  //   return res.status(200).json({ status: 200, message: '유저 조회 성공', data });
+  return res.status(201).json({ status: 201, message: '판매글 생성 성공', data: salespost });
 };
 
 const salespostController = { salespostCreate };
