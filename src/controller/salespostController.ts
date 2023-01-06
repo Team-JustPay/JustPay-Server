@@ -18,7 +18,7 @@ const salespostCreate = async (req: Request, res: Response) => {
   const salesPostCreateDTO: SalesPostCreateDTO = req.body;
 
   const data = await SalespostService.createSalespost(userId, location, salesPostCreateDTO);
-  console.log(data);
+  // console.log(data);
   //   // req body type 변경
   //   productCount = parseInt(productCount);
   //   price = parseInt(price);

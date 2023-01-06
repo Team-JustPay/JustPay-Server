@@ -1,9 +1,9 @@
 export interface SalesPostCreateDTO {
-  productCount: number;
+  productCount: string;
   salesOption: string;
   priceOption: string;
   price: string;
   certificationWord: string;
   description: string;
-  shippingOptions: string[];
+  shippingOptions: string;
 }
