@@ -25,6 +25,8 @@ export default {
   CREATE_SUGGEST_SUCCESS: '구매 제시 성공',
   GET_SUGGEST_LIST_SUCCESS: '구매 제시 리스트 조회 성공',
   GET_SUGGEST_LIST_FAIL: '구매 제시 리스트 조회 실패',
+  DELETE_SUGGEST_SUCCESS: '구매 제시글 삭제 성공',
+  DELETE_SUGGEST_FAIL: '구매 제시글 삭제 실패',
 
   // 토큰
   CREATE_TOKEN_SUCCESS: '토큰 재발급 성공',
