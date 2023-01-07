@@ -9,13 +9,13 @@ import { salespostService } from '../service';
 const salespostCreate = async (req: Request, res: Response) => {
   const { mainImage, certifications } = req.files as any;
 
+  if (!mainImage || !certifications) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
+  }
+
   const image = mainImage[0];
   const { location } = image;
   const locations = certifications.map((file: { location: any }) => file.location);
-
-  if (!location || !locations) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
-  }
 
   const { userId } = res.locals; // jwt로 userId얻기
   const salesPostCreateDTO: CreateSalespostDTO = req.body;
