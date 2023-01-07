@@ -25,6 +25,10 @@ export default {
   CREATE_SUGGEST_SUCCESS: '구매 제시 성공',
   GET_SUGGEST_LIST_SUCCESS: '구매 제시 리스트 조회 성공',
   GET_SUGGEST_LIST_FAIL: '구매 제시 리스트 조회 실패',
+  DELETE_SUGGEST_SUCCESS: '구매 제시글 삭제 성공',
+  DELETE_SUGGEST_FAIL: '구매 제시글 삭제 실패',
+  RAISE_SUGGEST_PRICE_SUCCESS: '구매 제시 가격 올리기 성공',
+  RAISE_SUGGEST_PRICE_FAIL: '구매 제시 가격 올리기 실패',
 
   // 토큰
   CREATE_TOKEN_SUCCESS: '토큰 재발급 성공',
@@ -50,4 +54,7 @@ export default {
 
   SALESPOST_GET_SUCCESS: 'salespost 조회 성공',
   GET_SHIPPING_INFO: '배송 정보 조회 성공',
+
+  GET_ONE_SALESPOST_SUCCESS: 'salespost 세부 정보 조회',
+  USER_INFO_GET_SUCCESS: '유저 정보 조회 성공',
 };

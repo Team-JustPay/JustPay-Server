@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
+import { shippingContents } from '../constants/shippingInfo';
 import { wordList } from '../constants/wordList';
 import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { GetPurchaseListDTO } from '../interfaces/salespost/getPurchaseListDTO';
@@ -175,6 +176,56 @@ const getPurchaseList = async (userId: number, salespostId: number, isMatched: s
   return data;
 };
 
+const getOneSalespost = async (salespostId: number, userId: number) => {
+  const data = await prisma.salesPost.findUnique({
+    where: {
+      id: salespostId,
+    },
+    select: {
+      id: true,
+      mainImageUrl: true,
+      productCount: true,
+      salesOption: true,
+      priceOption: true,
+      price: true,
+      certificationWord: true,
+      description: true,
+      status: true,
+      createdAt: true,
+      ShippingOptions: {
+        select: {
+          name: true,
+          price: true,
+        },
+      },
+      sellor: {
+        select: {
+          id: true,
+          socialId: true,
+          profileImageUrl: true,
+        },
+      },
+      purchaseSuggests: {
+        select: {
+          price: true,
+        },
+      },
+    },
+  });
+
+  const isMine = data?.sellor.id === userId;
+  const highestPrice = data?.purchaseSuggests
+    ? Math.max(...data.purchaseSuggests.map((x) => x.price))
+    : null;
+
+  const parsedShippingOptions = data?.ShippingOptions.map((x) => {
+    return { ...x, contents: shippingContents[x.name] };
+  });
+
+  const { purchaseSuggests, ShippingOptions, ...dataWithtoutSuggests } = data as any;
+  return { ...dataWithtoutSuggests, isMine, highestPrice, ShippingOptions: parsedShippingOptions };
+};
+
 const salespostService = {
   createSuggest,
   createSalespost,
@@ -182,6 +233,7 @@ const salespostService = {
   getCertifications,
   statusChange,
   getPurchaseList,
+  getOneSalespost,
 };
 
 export default salespostService;

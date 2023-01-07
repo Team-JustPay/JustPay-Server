@@ -22,6 +22,61 @@ const getMysalespost = async (userId: number, status: number) => {
   return data;
 };
 
-const userService = { getMysalespost };
+const getUserInfo = async (userId: number) => {
+  const data = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      profileImageUrl: true,
+      socialId: true,
+      dealCount: true,
+      saleCount: true,
+      saleMoney: true,
+      purchaseCount: true,
+      purchaseMoney: true,
+      openChatUrl: true,
+      twitterMessageUrl: true,
+    },
+  });
+  return data;
+};
+
+const getMyInfo = async (userId: number) => {
+  const data = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      email: true,
+      nickName: true,
+      profileImageUrl: true,
+      socialId: true,
+      phoneNumber: true,
+      accountNumber: true,
+      dealCount: true,
+      saleCount: true,
+      saleMoney: true,
+      purchaseCount: true,
+      purchaseMoney: true,
+      openChatUrl: true,
+      twitterMessageUrl: true,
+      shippingInfo: {
+        select: {
+          id: true,
+          receiverName: true,
+          address: true,
+          cuStoreName: true,
+          gsStoreName: true,
+        },
+      },
+    },
+  });
+  return data;
+};
+
+const userService = { getMysalespost, getUserInfo, getMyInfo };
 
 export default userService;
