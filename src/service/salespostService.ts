@@ -202,6 +202,7 @@ const getOneSalespost = async (salespostId: number, userId: number) => {
         select: {
           id: true,
           socialId: true,
+          nickName: true,
           profileImageUrl: true,
         },
       },
