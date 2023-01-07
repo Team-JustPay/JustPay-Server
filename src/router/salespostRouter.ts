@@ -27,4 +27,6 @@ router.get('/:salespostId/certifications', salespostController.getCertifications
 
 router.patch('/:salespostId/status', salespostController.statusChange);
 
+router.get('/:salespostId/suggests', auth, salespostController.getPurchaseList);
+
 export default router;
