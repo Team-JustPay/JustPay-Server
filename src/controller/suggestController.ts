@@ -25,9 +25,25 @@ const deleteSuggest = async (req: Request, res: Response) => {
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.DELETE_SUGGEST_SUCCESS));
 };
 
+const raisePrice = async (req: Request, res: Response) => {
+  const { suggestId } = req.params;
+  const { price } = req.body;
+
+  if (!suggestId) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.RAISE_SUGGEST_PRICE_FAIL));
+  }
+
+  const data = await suggestService.raisePrice(+suggestId, price);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.RAISE_SUGGEST_PRICE_FAIL));
+  }
+  return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.RAISE_SUGGEST_PRICE_SUCCESS));
+};
 const suggestController = {
   getShippingInfo,
   deleteSuggest,
+  raisePrice,
 };
 
 export default suggestController;
