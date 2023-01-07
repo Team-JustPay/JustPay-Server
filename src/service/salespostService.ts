@@ -204,11 +204,21 @@ const getOneSalespost = async (salespostId: number, userId: number) => {
           profileImageUrl: true,
         },
       },
+      purchaseSuggests: {
+        select: {
+          price: true,
+        },
+      },
     },
   });
+
   const isMine = data?.sellor.id === userId;
-  const dataWithMine = { ...data, isMine };
-  return dataWithMine;
+  const highestPrice = data?.purchaseSuggests
+    ? Math.max(...data.purchaseSuggests.map((x) => x.price))
+    : null;
+
+  const { purchaseSuggests, ...dataWithtoutSuggests } = data as any;
+  return { ...dataWithtoutSuggests, isMine, highestPrice };
 };
 
 const salespostService = {
