@@ -45,8 +45,19 @@ const getShippingInfo = async (suggestId: number) => {
   }
 };
 
+const deleteSuggest = async (suggestId: number) => {
+  const data = await prisma.purchaseSuggest.delete({
+    where: {
+      id: suggestId,
+    },
+  });
+
+  return data;
+};
+
 const suggestService = {
   getShippingInfo,
+  deleteSuggest,
 };
 
 export default suggestService;
