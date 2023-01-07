@@ -52,4 +52,6 @@ export default {
 
   SALESPOST_GET_SUCCESS: 'salespost 조회 성공',
   GET_SHIPPING_INFO: '배송 정보 조회 성공',
+
+  GET_ONE_SALESPOST_SUCCESS: 'salespost 세부 정보 조회',
 };

@@ -95,6 +95,15 @@ const getPurchaseList = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.GET_SUGGEST_LIST_SUCCESS, data));
 };
 
+const getOneSalespost = async (req: Request, res: Response) => {
+  const { salespostId } = req.params;
+  const { userId } = res.locals;
+
+  const data = await salespostService.getOneSalespost(+salespostId, userId);
+
+  return res.status(sc.OK).send(success(sc.OK, rm.GET_ONE_SALESPOST_SUCCESS, data));
+};
+
 const salespostController = {
   createSuggest,
   salespostCreate,
@@ -102,6 +111,7 @@ const salespostController = {
   getCertifications,
   statusChange,
   getPurchaseList,
+  getOneSalespost,
 };
 
 export default salespostController;
