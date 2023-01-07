@@ -56,6 +56,29 @@ const createCertificationWord = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_WORD_CREATE, data));
 };
 
-const salespostController = { createSuggest, salespostCreate, createCertificationWord };
+const getCertifications = async (req: Request, res: Response) => {
+  const { salespostId } = req.params;
+  const data = await salespostService.getCertifications(+salespostId);
+  return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_GET, data));
+};
+
+const statusChange = async (req: Request, res: Response) => {
+  const { salespostId } = req.params;
+  const status = req.body.status;
+  if (!(status in [0, 1])) {
+    return res.status(sc.BAD_REQUEST).send(success(sc.OK, rm.STATUS_NUMBER_ERROR));
+  }
+
+  const data = await salespostService.statusChange(+salespostId, status);
+  return res.status(sc.OK).send(success(sc.OK, rm.STATUS_CHANGE));
+};
+
+const salespostController = {
+  createSuggest,
+  salespostCreate,
+  createCertificationWord,
+  getCertifications,
+  statusChange,
+};
 
 export default salespostController;
