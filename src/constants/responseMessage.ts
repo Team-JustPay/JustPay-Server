@@ -46,4 +46,6 @@ export default {
   STATUS_NUMBER_ERROR: 'status 번호가 유효하지 않습니다.',
 
   SALESPOST_GET_SUCCESS: 'salespost 조회 성공',
+
+  GET_SHIPPING_INFO: '배송 정보 조회 성공',
 };
