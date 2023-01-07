@@ -19,9 +19,17 @@ const getMysalespost = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.SALESPOST_GET_SUCCESS, data));
 };
 
+const geyMyInfo = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
+
+  const data = await userService.getMyInfo(+userId);
+  return res.status(sc.OK).send(success(sc.OK, rm.USER_INFO_GET_SUCCESS, data));
+};
+
 const userController = {
   getMysalespost,
   getUserInfo,
+  geyMyInfo,
 };
 
 export default userController;
