@@ -65,6 +65,10 @@ const getCertifications = async (req: Request, res: Response) => {
 const statusChange = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
   const status = req.body.status;
+  if (!(status in [0, 1])) {
+    return res.status(sc.BAD_REQUEST).send(success(sc.OK, rm.STATUS_NUMBER_ERROR));
+  }
+
   const data = await salespostService.statusChange(+salespostId, status);
   return res.status(sc.OK).send(success(sc.OK, rm.STATUS_CHANGE));
 };
