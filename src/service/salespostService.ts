@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
+import { shippingContents } from '../constants/shippingInfo';
 import { wordList } from '../constants/wordList';
 import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { GetPurchaseListDTO } from '../interfaces/salespost/getPurchaseListDTO';
@@ -217,8 +218,12 @@ const getOneSalespost = async (salespostId: number, userId: number) => {
     ? Math.max(...data.purchaseSuggests.map((x) => x.price))
     : null;
 
-  const { purchaseSuggests, ...dataWithtoutSuggests } = data as any;
-  return { ...dataWithtoutSuggests, isMine, highestPrice };
+  const parsedShippingOptions = data?.ShippingOptions.map((x) => {
+    return { ...x, contents: shippingContents[x.name] };
+  });
+
+  const { purchaseSuggests, ShippingOptions, ...dataWithtoutSuggests } = data as any;
+  return { ...dataWithtoutSuggests, isMine, highestPrice, ShippingOptions: parsedShippingOptions };
 };
 
 const salespostService = {
