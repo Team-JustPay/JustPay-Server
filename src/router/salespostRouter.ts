@@ -23,4 +23,8 @@ router.post(
 );
 router.get('/certificationWord', salespostController.createCertificationWord);
 
+router.get('/:salespostId/certifications', salespostController.getCertifications);
+
+router.patch('/:salespostId/status', salespostController.statusChange);
+
 export default router;

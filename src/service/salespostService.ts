@@ -95,6 +95,51 @@ const createCertificationWord = async () => {
 
   return data;
 };
-const salespostService = { createSuggest, createSalespost, createCertificationWord };
+
+const getCertifications = async (salespostId: number) => {
+  // salespostId가 없을때 404처리 필요
+  const data = await prisma.salesPost.findUnique({
+    where: {
+      id: salespostId,
+    },
+    select: {
+      certificationWord: true,
+      certifications: {
+        select: {
+          imageUrl: true,
+        },
+      },
+    },
+  });
+
+  const imagesUrls = data?.certifications.map((x) => x.imageUrl);
+  return {
+    certificationWord: data?.certificationWord,
+    imagesUrls: imagesUrls,
+  };
+};
+
+const statusChange = async (salespostId: number, status: number) => {
+  // salespostId가 없을때 404처리 필요
+  // 판매자일때만 상태변경할 수 있도록 권한 체크 필요
+  const data = await prisma.salesPost.update({
+    where: {
+      id: salespostId,
+    },
+    data: {
+      status: status,
+    },
+  });
+
+  return data;
+};
+
+const salespostService = {
+  createSuggest,
+  createSalespost,
+  createCertificationWord,
+  getCertifications,
+  statusChange,
+};
 
 export default salespostService;
