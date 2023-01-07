@@ -23,6 +23,8 @@ export default {
   // 제시글
   CREATE_SUGGEST_FAIL: '구매 제시 실패',
   CREATE_SUGGEST_SUCCESS: '구매 제시 성공',
+  GET_SUGGEST_LIST_SUCCESS: '구매 제시 리스트 조회 성공',
+  GET_SUGGEST_LIST_FAIL: '구매 제시 리스트 조회 실패',
 
   // 토큰
   CREATE_TOKEN_SUCCESS: '토큰 재발급 성공',
@@ -46,6 +48,5 @@ export default {
   STATUS_NUMBER_ERROR: 'status 번호가 유효하지 않습니다.',
 
   SALESPOST_GET_SUCCESS: 'salespost 조회 성공',
-
   GET_SHIPPING_INFO: '배송 정보 조회 성공',
 };
