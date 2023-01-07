@@ -77,6 +77,40 @@ const getMyInfo = async (userId: number) => {
   return data;
 };
 
-const userService = { getMysalespost, getUserInfo, getMyInfo };
+const getMysuggests = async (userId: number, isPurchased: string) => {
+  const statusArr = isPurchased === 'true' ? [3] : [0, 1, 2];
+  const data = await prisma.purchaseSuggest.findMany({
+    where: {
+      suggesterId: userId,
+      status: {
+        in: statusArr,
+      },
+    },
+    select: {
+      id: true,
+      imageUrl: true,
+      productCount: true,
+      purchaseOption: true,
+      price: true,
+      description: true,
+      status: true,
+      suggester: {
+        select: {
+          id: true,
+          profileImageUrl: true,
+        },
+      },
+    },
+    orderBy: [
+      {
+        createdAt: 'desc',
+      },
+    ],
+  });
+
+  return data;
+};
+
+const userService = { getMysalespost, getUserInfo, getMyInfo, getMysuggests };
 
 export default userService;
