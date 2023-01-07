@@ -68,10 +68,24 @@ const raisePrice = async (suggestId: number, price: number) => {
   return data;
 };
 
+const updateInvoiceNumber = async (suggestId: number, invoiceNumber: string) => {
+  const data = await prisma.purchaseSuggest.update({
+    where: {
+      id: suggestId,
+    },
+    data: {
+      invoiceNumber,
+    },
+  });
+
+  return data;
+};
+
 const suggestService = {
   getShippingInfo,
   deleteSuggest,
   raisePrice,
+  updateInvoiceNumber,
 };
 
 export default suggestService;

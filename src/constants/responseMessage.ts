@@ -29,6 +29,8 @@ export default {
   DELETE_SUGGEST_FAIL: '구매 제시글 삭제 실패',
   RAISE_SUGGEST_PRICE_SUCCESS: '구매 제시 가격 올리기 성공',
   RAISE_SUGGEST_PRICE_FAIL: '구매 제시 가격 올리기 실패',
+  UPDATE_INVOICE_NUMBER_SUCCESS: '운송장 정보 입력 성공',
+  UPDATE_INVOICE_NUMBER_FAIL: '운송장 정보 입력 실패',
 
   // 토큰
   CREATE_TOKEN_SUCCESS: '토큰 재발급 성공',
