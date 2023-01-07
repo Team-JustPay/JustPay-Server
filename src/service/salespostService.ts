@@ -168,12 +168,10 @@ const getPurchaseList = async (userId: number, salespostId: number, isMatched: s
       },
     ],
   });
-  console.log(suggestList);
 
   const data = suggestList.map((suggest) => {
     return { ...suggest, isMine: userId === suggest.suggester.id };
   });
-  console.log(data);
   return data;
 };
 
