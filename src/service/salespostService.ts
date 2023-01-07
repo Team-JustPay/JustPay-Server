@@ -121,7 +121,7 @@ const getCertifications = async (salespostId: number) => {
 
 const statusChange = async (salespostId: number, status: number) => {
   // salespostId가 없을때 404처리 필요
-  // status 0,1 아닐때 처리 필요
+  // 판매자일때만 상태변경할 수 있도록 권한 체크 필요
   const data = await prisma.salesPost.update({
     where: {
       id: salespostId,
