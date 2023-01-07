@@ -70,7 +70,29 @@ const statusChange = async (req: Request, res: Response) => {
   }
 
   const data = await salespostService.statusChange(+salespostId, status);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(success(sc.NOT_FOUND, rm.STATUS_FAIL));
+  }
   return res.status(sc.OK).send(success(sc.OK, rm.STATUS_CHANGE));
+};
+
+const getPurchaseList = async (req: Request, res: Response) => {
+  const { salespostId } = req.params;
+  const { isMatched } = req.query;
+  const { userId } = res.locals;
+
+  if (!salespostId || !isMatched) {
+    return res.status(sc.BAD_REQUEST).send(success(sc.BAD_REQUEST, rm.GET_SUGGEST_LIST_FAIL));
+  }
+
+  const data = await salespostService.getPurchaseList(userId, +salespostId, isMatched as string);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(success(sc.NOT_FOUND, rm.GET_SUGGEST_LIST_FAIL));
+  }
+
+  return res.status(sc.OK).send(success(sc.OK, rm.GET_SUGGEST_LIST_SUCCESS, data));
 };
 
 const salespostController = {
@@ -79,6 +101,7 @@ const salespostController = {
   createCertificationWord,
   getCertifications,
   statusChange,
+  getPurchaseList,
 };
 
 export default salespostController;
