@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { wordList } from '../constants/wordList';
 import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
+import { GetPurchaseListDTO } from '../interfaces/salespost/getPurchaseListDTO';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import getShippingOptionId from '../modules/shippingOption';
 
@@ -134,12 +135,55 @@ const statusChange = async (salespostId: number, status: number) => {
   return data;
 };
 
+const getPurchaseList = async (userId: number, salespostId: number, isMatched: string) => {
+  const statusArr = isMatched === 'true' ? [1, 2, 3] : [0];
+  const suggestList: GetPurchaseListDTO[] = await prisma.purchaseSuggest.findMany({
+    where: {
+      salesPostId: salespostId,
+      status: {
+        in: statusArr,
+      },
+    },
+    select: {
+      id: true,
+      imageUrl: true,
+      productCount: true,
+      purchaseOption: true,
+      price: true,
+      description: true,
+      status: true,
+      suggester: {
+        select: {
+          id: true,
+          profileImageUrl: true,
+        },
+      },
+    },
+    orderBy: [
+      {
+        price: 'desc',
+      },
+      {
+        createdAt: 'desc',
+      },
+    ],
+  });
+  console.log(suggestList);
+
+  const data = suggestList.map((suggest) => {
+    return { ...suggest, isMine: userId === suggest.suggester.id };
+  });
+  console.log(data);
+  return data;
+};
+
 const salespostService = {
   createSuggest,
   createSalespost,
   createCertificationWord,
   getCertifications,
   statusChange,
+  getPurchaseList,
 };
 
 export default salespostService;
