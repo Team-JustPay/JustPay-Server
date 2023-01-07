@@ -46,6 +46,7 @@ export default {
   // salespost status 변경
   STATUS_CHANGE: '상태 변경 성공',
   STATUS_NUMBER_ERROR: 'status 번호가 유효하지 않습니다.',
+  STATUS_FAIL: '상태 변경 실패',
 
   SALESPOST_GET_SUCCESS: 'salespost 조회 성공',
   GET_SHIPPING_INFO: '배송 정보 조회 성공',
