@@ -39,4 +39,5 @@ export default {
   CERTIFICATION_WORD_CREATE: '인증 코드 생성 성공',
 
   NO_IMAGE: '이미지 없음',
+  CERTIFICATION_GET: '인증사진 조회 성공',
 };

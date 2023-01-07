@@ -56,6 +56,17 @@ const createCertificationWord = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_WORD_CREATE, data));
 };
 
-const salespostController = { createSuggest, salespostCreate, createCertificationWord };
+const getCertifications = async (req: Request, res: Response) => {
+  const { salespostId } = req.params;
+  const data = await salespostService.getCertifications(+salespostId);
+  return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_GET, data));
+};
+
+const salespostController = {
+  createSuggest,
+  salespostCreate,
+  createCertificationWord,
+  getCertifications,
+};
 
 export default salespostController;

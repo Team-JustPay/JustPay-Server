@@ -95,6 +95,34 @@ const createCertificationWord = async () => {
 
   return data;
 };
-const salespostService = { createSuggest, createSalespost, createCertificationWord };
+
+const getCertifications = async (salespostId: number) => {
+  // salespostId가 없을때 404처리 필요
+  const data = await prisma.salesPost.findUnique({
+    where: {
+      id: salespostId,
+    },
+    select: {
+      certificationWord: true,
+      certifications: {
+        select: {
+          imageUrl: true,
+        },
+      },
+    },
+  });
+
+  const imagesUrls = data?.certifications.map((x) => x.imageUrl);
+  return {
+    certificationWord: data?.certificationWord,
+    imagesUrls: imagesUrls,
+  };
+};
+const salespostService = {
+  createSuggest,
+  createSalespost,
+  createCertificationWord,
+  getCertifications,
+};
 
 export default salespostService;
