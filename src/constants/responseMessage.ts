@@ -40,4 +40,5 @@ export default {
 
   NO_IMAGE: '이미지 없음',
   CERTIFICATION_GET: '인증사진 조회 성공',
+  STATUS_CHANGE: '상태 변경 성공',
 };

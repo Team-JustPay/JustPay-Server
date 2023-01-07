@@ -118,11 +118,28 @@ const getCertifications = async (salespostId: number) => {
     imagesUrls: imagesUrls,
   };
 };
+
+const statusChange = async (salespostId: number, status: number) => {
+  // salespostId가 없을때 404처리 필요
+  // status 0,1 아닐때 처리 필요
+  const data = await prisma.salesPost.update({
+    where: {
+      id: salespostId,
+    },
+    data: {
+      status: status,
+    },
+  });
+
+  return data;
+};
+
 const salespostService = {
   createSuggest,
   createSalespost,
   createCertificationWord,
   getCertifications,
+  statusChange,
 };
 
 export default salespostService;
