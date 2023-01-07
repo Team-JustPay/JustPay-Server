@@ -40,10 +40,28 @@ const raisePrice = async (req: Request, res: Response) => {
   }
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.RAISE_SUGGEST_PRICE_SUCCESS));
 };
+
+const updateInvoiceNumber = async (req: Request, res: Response) => {
+  const { suggestId } = req.params;
+  const { invoiceNumber } = req.body;
+
+  if (!suggestId) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_INVOICE_NUMBER_FAIL));
+  }
+
+  const data = await suggestService.updateInvoiceNumber(+suggestId, invoiceNumber);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_INVOICE_NUMBER_FAIL));
+  }
+  return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_INVOICE_NUMBER_SUCCESS));
+};
+
 const suggestController = {
   getShippingInfo,
   deleteSuggest,
   raisePrice,
+  updateInvoiceNumber,
 };
 
 export default suggestController;
