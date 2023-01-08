@@ -12,4 +12,7 @@ router.delete('/:suggestId', auth, suggestController.deleteSuggest);
 router.patch('/:suggestId/price', auth, suggestController.raisePrice);
 
 router.patch('/:suggestId/invoice', auth, suggestController.updateInvoiceNumber);
+
+router.get('/:suggestId/payment', suggestController.getSuggestPaymentInfo);
+
 export default router;
