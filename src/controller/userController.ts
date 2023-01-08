@@ -73,12 +73,25 @@ const getMysuggests = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.GET_MY_SUGGEST_LIST_SUCCESS, data));
 };
 
+const getMyNotifications = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
+
+  const data = await userService.getMyNotifications(userId);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.GET_NOTIFICATIONS_FAIL));
+  }
+
+  return res.status(sc.OK).send(success(sc.OK, rm.GET_NOTIFICATIONS_SUCCESS, data));
+};
+
 const userController = {
   getMysalespost,
   getUserInfo,
   geyMyInfo,
   chageMyInfo,
   getMysuggests,
+  getMyNotifications,
 };
 
 export default userController;

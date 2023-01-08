@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import { ShippingInfoDTO, UserInfoDTO } from '../interfaces/user/userUpdateDTO';
+import dateParserInNotification from '../modules/dateNotification';
 
 const prisma = new PrismaClient();
 
@@ -134,6 +135,36 @@ const getMysuggests = async (userId: number, isPurchased: string) => {
   return data;
 };
 
-const userService = { getMysalespost, getUserInfo, getMyInfo, getMysuggests, chageMyInfo };
+const getMyNotifications = async (userId: number) => {
+  const notificationsList = await prisma.notification.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      message: true,
+      createdAt: true,
+    },
+    orderBy: [
+      {
+        createdAt: 'desc',
+      },
+    ],
+  });
+
+  const data = notificationsList.map((notification) => {
+    return { ...notification, createdAt: dateParserInNotification(notification.createdAt) };
+  });
+
+  return data;
+};
+
+const userService = {
+  getMysalespost,
+  getUserInfo,
+  getMyInfo,
+  getMysuggests,
+  chageMyInfo,
+  getMyNotifications,
+};
 
 export default userService;
