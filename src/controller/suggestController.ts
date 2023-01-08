@@ -40,6 +40,11 @@ const deleteSuggest = async (req: Request, res: Response) => {
       sellorId || 0,
       notificationMessages.SUGGESTER_SUGGEST_CANCEL,
     );
+    if (!notification) {
+      return res
+        .status(sc.INTERNAL_SERVER_ERROR)
+        .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+    }
   } else {
     // 판매자가 제시거절
     // 제시자(data.suggesterId)한테 메시지 전송
@@ -47,6 +52,11 @@ const deleteSuggest = async (req: Request, res: Response) => {
       data.suggesterId,
       notificationMessages.SELLOR_SUGGEST_DENY,
     );
+    if (!notification) {
+      return res
+        .status(sc.INTERNAL_SERVER_ERROR)
+        .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+    }
   }
 
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.DELETE_SUGGEST_SUCCESS));
@@ -121,6 +131,11 @@ const updateStatus = async (req: Request, res: Response) => {
         sellorId || 0,
         notificationMessages.SUGGESTER_PAYMENT_COMPLETE,
       );
+      if (!notification) {
+        return res
+          .status(sc.INTERNAL_SERVER_ERROR)
+          .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+      }
     }
     return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
   }
