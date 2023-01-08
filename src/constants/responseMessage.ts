@@ -31,6 +31,10 @@ export default {
   RAISE_SUGGEST_PRICE_FAIL: '구매 제시 가격 올리기 실패',
   UPDATE_INVOICE_NUMBER_SUCCESS: '운송장 정보 입력 성공',
   UPDATE_INVOICE_NUMBER_FAIL: '운송장 정보 입력 실패',
+  GET_MY_SUGGEST_LIST_SUCCESS: '내 구매중 정보 리스트 조회 성공',
+  GET_MY_SUGGEST_LIST_FAIL: '내 구매중 정보 리스트 조회 실패',
+  UPDATE_SUGGEST_STATUS_SUCCESS: '제시글 상태 변경 성공',
+  UPDATE_SUGGEST_STATUS_FAIL: '제시글 상태 변경 실패',
 
   // 토큰
   CREATE_TOKEN_SUCCESS: '토큰 재발급 성공',
@@ -59,4 +63,7 @@ export default {
 
   GET_ONE_SALESPOST_SUCCESS: 'salespost 세부 정보 조회',
   USER_INFO_GET_SUCCESS: '유저 정보 조회 성공',
+
+  GET_SUGGEST_PAYMENT_INFO_FAIL: '구매 제시 결제 정보 조회 실패',
+  GET_SUGGEST_PAYMENT_INFO_SUCCESS: '구매 제시 결제 정보 조회 성공',
 };

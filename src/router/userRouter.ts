@@ -7,6 +7,8 @@ const router: Router = Router();
 
 router.get('/my/salesposts', auth, userController.getMysalespost);
 router.get('/my/info', auth, userController.geyMyInfo);
+router.put('/my/info', auth, userController.chageMyInfo);
 router.get('/:userId', userController.getUserInfo);
+router.get('/my/suggests', auth, userController.getMysuggests);
 
 export default router;
