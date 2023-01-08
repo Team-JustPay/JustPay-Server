@@ -81,11 +81,94 @@ const updateInvoiceNumber = async (suggestId: number, invoiceNumber: string) => 
   return data;
 };
 
+const updateStatus = async (suggestId: number, status: number) => {
+  const data = await prisma.purchaseSuggest.update({
+    where: {
+      id: suggestId,
+    },
+    data: {
+      status,
+    },
+  });
+
+  return data;
+};
+
+const updateStatusInvoice = async (
+  suggestId: number,
+  userId: number,
+  status: number,
+  invoiceDeadline: number,
+) => {
+  if (status === 1) {
+    const suggestInfo = await prisma.purchaseSuggest.findUnique({
+      where: {
+        id: suggestId,
+      },
+      select: {
+        suggesterId: true,
+        productCount: true,
+        price: true,
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        dealCount: {
+          increment: suggestInfo?.productCount,
+        },
+        saleCount: {
+          increment: suggestInfo?.productCount,
+        },
+        saleMoney: {
+          increment: suggestInfo?.price,
+        },
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        id: suggestInfo?.suggesterId,
+      },
+      data: {
+        dealCount: {
+          increment: suggestInfo?.productCount,
+        },
+        purchaseCount: {
+          increment: suggestInfo?.productCount,
+        },
+        purchaseMoney: {
+          increment: suggestInfo?.price,
+        },
+      },
+    });
+  }
+
+  const invoiceDate = new Date();
+  invoiceDate.setDate(invoiceDate.getDate() + invoiceDeadline);
+
+  const data = await prisma.purchaseSuggest.update({
+    where: {
+      id: suggestId,
+    },
+    data: {
+      status,
+      invoiceDeadline: invoiceDate,
+    },
+  });
+  return data;
+};
+
 const suggestService = {
   getShippingInfo,
   deleteSuggest,
   raisePrice,
   updateInvoiceNumber,
+  updateStatus,
+  updateStatusInvoice,
 };
 
 export default suggestService;
