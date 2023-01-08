@@ -26,6 +26,7 @@ const deleteSuggest = async (req: Request, res: Response) => {
   if (!suggestId) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.DELETE_SUGGEST_FAIL));
   }
+  const sellorId = await suggestService.getSellorId(+suggestId);
   const data = await suggestService.deleteSuggest(+suggestId);
 
   if (!data) {
@@ -35,10 +36,9 @@ const deleteSuggest = async (req: Request, res: Response) => {
   if (data.suggesterId === userId) {
     // 제시자(data.suggesterId)가 제시취소
     // 판매자한테 메시지 전송
-    const sellorId = await suggestService.getSellorId(+suggestId);
     const notification = await createNotification(
       sellorId || 0,
-      notificationMessages.SUGGESTER_SUGGEST_CANCEL,
+      notificationMessages.SELL_SUGGEST_CANCEL,
     );
     if (!notification) {
       return res
@@ -50,7 +50,7 @@ const deleteSuggest = async (req: Request, res: Response) => {
     // 제시자(data.suggesterId)한테 메시지 전송
     const notification = await createNotification(
       data.suggesterId,
-      notificationMessages.SELLOR_SUGGEST_DENY,
+      notificationMessages.PURCHASE_SUGGEST_DENY,
     );
     if (!notification) {
       return res
@@ -95,7 +95,7 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
 
   const notification = await createNotification(
     userId,
-    notificationMessages.SELLOR_INVOICE_NUMBER_INPUT_COMPLETE,
+    notificationMessages.PURCHASE_INVOICE_NUMBER_INPUT_COMPLETE,
   );
   if (!notification) {
     return res
@@ -129,7 +129,7 @@ const updateStatus = async (req: Request, res: Response) => {
       const sellorId = await suggestService.getSellorId(+suggestId);
       const notification = await createNotification(
         sellorId || 0,
-        notificationMessages.SUGGESTER_PAYMENT_COMPLETE,
+        notificationMessages.SELL_PAYMENT_COMPLETE,
       );
       if (!notification) {
         return res
@@ -155,10 +155,16 @@ const updateStatus = async (req: Request, res: Response) => {
   }
 
   // 제시수락하기
-  const certification = await createNotification(
+  const notification = await createNotification(
     data.suggesterId,
-    notificationMessages.SELLOR_SUGGEST_ACCEPT,
+    notificationMessages.PURCHASE_SUGGEST_ACCEPT,
   );
+
+  if (!notification) {
+    return res
+      .status(sc.INTERNAL_SERVER_ERROR)
+      .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+  }
 
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
 };

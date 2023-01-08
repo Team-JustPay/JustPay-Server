@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
-import { ShippingInfoDTO, UserInfoDTO } from '../interfaces/user/userUpdateDTO';
+import { UserInfoDTO } from '../interfaces/user/userUpdateDTO';
 import dateParserInNotification from '../modules/dateNotification';
+
+import { getNotificationType } from './../constants/notification';
 
 const prisma = new PrismaClient();
 
@@ -152,7 +154,11 @@ const getMyNotifications = async (userId: number) => {
   });
 
   const data = notificationsList.map((notification) => {
-    return { ...notification, createdAt: dateParserInNotification(notification.createdAt) };
+    return {
+      ...notification,
+      createdAt: dateParserInNotification(notification.createdAt),
+      notificationType: getNotificationType(notification.message),
+    };
   });
 
   return data;
