@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
+import { ShippingInfoDTO, UserInfoDTO } from '../interfaces/user/userUpdateDTO';
+
 const prisma = new PrismaClient();
 
 const getMysalespost = async (userId: number, status: number) => {
@@ -65,7 +67,6 @@ const getMyInfo = async (userId: number) => {
       twitterMessageUrl: true,
       shippingInfo: {
         select: {
-          id: true,
           receiverName: true,
           address: true,
           cuStoreName: true,
@@ -77,6 +78,23 @@ const getMyInfo = async (userId: number) => {
   return data;
 };
 
-const userService = { getMysalespost, getUserInfo, getMyInfo };
+const chageMyInfo = async (userId: number, userInfo: UserInfoDTO, shippingInfo: any) => {
+  const data = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      ...userInfo,
+      shippingInfo: {
+        update: {
+          ...shippingInfo,
+        },
+      },
+    },
+  });
+  return data;
+};
+
+const userService = { getMysalespost, getUserInfo, getMyInfo, chageMyInfo };
 
 export default userService;
