@@ -20,6 +20,7 @@ const getShippingInfo = async (req: Request, res: Response) => {
 };
 
 const deleteSuggest = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
   const { suggestId } = req.params;
 
   if (!suggestId) {
@@ -29,6 +30,23 @@ const deleteSuggest = async (req: Request, res: Response) => {
 
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.DELETE_SUGGEST_FAIL));
+  }
+
+  if (data.suggesterId === userId) {
+    // 제시자(data.suggesterId)가 제시취소
+    // 판매자한테 메시지 전송
+    const sellorId = await suggestService.getSellorId(+suggestId);
+    const notification = await createNotification(
+      sellorId || 0,
+      notificationMessages.SUGGESTER_SUGGEST_CANCEL,
+    );
+  } else {
+    // 판매자가 제시거절
+    // 제시자(data.suggesterId)한테 메시지 전송
+    const notification = await createNotification(
+      data.suggesterId,
+      notificationMessages.SELLOR_SUGGEST_DENY,
+    );
   }
 
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.DELETE_SUGGEST_SUCCESS));
@@ -65,7 +83,7 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_INVOICE_NUMBER_FAIL));
   }
 
-  const notification = createNotification(
+  const notification = await createNotification(
     userId,
     notificationMessages.SELLOR_INVOICE_NUMBER_INPUT_COMPLETE,
   );
@@ -96,6 +114,14 @@ const updateStatus = async (req: Request, res: Response) => {
     if (!data) {
       return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_SUGGEST_STATUS_FAIL));
     }
+
+    if (status === 2) {
+      const sellorId = await suggestService.getSellorId(+suggestId);
+      const notification = await createNotification(
+        sellorId || 0,
+        notificationMessages.SUGGESTER_PAYMENT_COMPLETE,
+      );
+    }
     return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
   }
 
@@ -112,6 +138,13 @@ const updateStatus = async (req: Request, res: Response) => {
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_SUGGEST_STATUS_FAIL));
   }
+
+  // 제시수락하기
+  const certification = await createNotification(
+    data.suggesterId,
+    notificationMessages.SELLOR_SUGGEST_ACCEPT,
+  );
+
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
 };
 
