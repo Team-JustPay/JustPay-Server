@@ -279,6 +279,22 @@ const getInvoiceInfo = async (suggestId: number) => {
   return data;
 };
 
+const getSellorId = async (suggestId: number) => {
+  const data = await prisma.purchaseSuggest.findUnique({
+    where: {
+      id: suggestId,
+    },
+    select: {
+      salesPost: {
+        select: {
+          sellorId: true,
+        },
+      },
+    },
+  });
+  return data?.salesPost.sellorId;
+};
+
 const suggestService = {
   getShippingInfo,
   deleteSuggest,
@@ -289,6 +305,7 @@ const suggestService = {
   getSuggestPaymentInfo,
   getSuggestDetail,
   getInvoiceInfo,
+  getSellorId,
 };
 
 export default suggestService;

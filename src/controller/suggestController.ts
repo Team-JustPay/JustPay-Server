@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 
 import { rm, sc } from '../constants';
+import { notificationMessages } from '../constants/notification';
 import { fail, success } from '../constants/response';
+import createNotification from '../modules/notification';
 import { suggestService } from '../service';
 
 const getShippingInfo = async (req: Request, res: Response) => {
@@ -18,6 +20,7 @@ const getShippingInfo = async (req: Request, res: Response) => {
 };
 
 const deleteSuggest = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
   const { suggestId } = req.params;
 
   if (!suggestId) {
@@ -27,6 +30,33 @@ const deleteSuggest = async (req: Request, res: Response) => {
 
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.DELETE_SUGGEST_FAIL));
+  }
+
+  if (data.suggesterId === userId) {
+    // 제시자(data.suggesterId)가 제시취소
+    // 판매자한테 메시지 전송
+    const sellorId = await suggestService.getSellorId(+suggestId);
+    const notification = await createNotification(
+      sellorId || 0,
+      notificationMessages.SUGGESTER_SUGGEST_CANCEL,
+    );
+    if (!notification) {
+      return res
+        .status(sc.INTERNAL_SERVER_ERROR)
+        .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+    }
+  } else {
+    // 판매자가 제시거절
+    // 제시자(data.suggesterId)한테 메시지 전송
+    const notification = await createNotification(
+      data.suggesterId,
+      notificationMessages.SELLOR_SUGGEST_DENY,
+    );
+    if (!notification) {
+      return res
+        .status(sc.INTERNAL_SERVER_ERROR)
+        .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+    }
   }
 
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.DELETE_SUGGEST_SUCCESS));
@@ -49,6 +79,7 @@ const raisePrice = async (req: Request, res: Response) => {
 };
 
 const updateInvoiceNumber = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
   const { suggestId } = req.params;
   const { invoiceNumber } = req.body;
 
@@ -61,6 +92,17 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_INVOICE_NUMBER_FAIL));
   }
+
+  const notification = await createNotification(
+    userId,
+    notificationMessages.SELLOR_INVOICE_NUMBER_INPUT_COMPLETE,
+  );
+  if (!notification) {
+    return res
+      .status(sc.INTERNAL_SERVER_ERROR)
+      .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+  }
+
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_INVOICE_NUMBER_SUCCESS));
 };
 
@@ -82,6 +124,19 @@ const updateStatus = async (req: Request, res: Response) => {
     if (!data) {
       return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_SUGGEST_STATUS_FAIL));
     }
+
+    if (status === 2) {
+      const sellorId = await suggestService.getSellorId(+suggestId);
+      const notification = await createNotification(
+        sellorId || 0,
+        notificationMessages.SUGGESTER_PAYMENT_COMPLETE,
+      );
+      if (!notification) {
+        return res
+          .status(sc.INTERNAL_SERVER_ERROR)
+          .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+      }
+    }
     return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
   }
 
@@ -98,6 +153,13 @@ const updateStatus = async (req: Request, res: Response) => {
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_SUGGEST_STATUS_FAIL));
   }
+
+  // 제시수락하기
+  const certification = await createNotification(
+    data.suggesterId,
+    notificationMessages.SELLOR_SUGGEST_ACCEPT,
+  );
+
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
 };
 
