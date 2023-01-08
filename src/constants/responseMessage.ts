@@ -33,6 +33,8 @@ export default {
   UPDATE_INVOICE_NUMBER_FAIL: '운송장 정보 입력 실패',
   GET_MY_SUGGEST_LIST_SUCCESS: '내 구매중 정보 리스트 조회 성공',
   GET_MY_SUGGEST_LIST_FAIL: '내 구매중 정보 리스트 조회 실패',
+  UPDATE_SUGGEST_STATUS_SUCCESS: '제시글 상태 변경 성공',
+  UPDATE_SUGGEST_STATUS_FAIL: '제시글 상태 변경 실패',
 
   // 토큰
   CREATE_TOKEN_SUCCESS: '토큰 재발급 성공',

@@ -57,6 +57,43 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_INVOICE_NUMBER_SUCCESS));
 };
 
+const updateStatus = async (req: Request, res: Response) => {
+  const { suggestId } = req.params;
+  const { status, invoiceDeadline } = req.body;
+  const { userId } = res.locals;
+
+  if (!status) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+  }
+
+  if (status !== 1) {
+    if (invoiceDeadline) {
+      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+    }
+    const data = await suggestService.updateStatus(+suggestId, status);
+
+    if (!data) {
+      return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_SUGGEST_STATUS_FAIL));
+    }
+    return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
+  }
+
+  if (!invoiceDeadline) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+  }
+  const data = await suggestService.updateStatusInvoice(
+    +suggestId,
+    userId,
+    status,
+    invoiceDeadline,
+  );
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_SUGGEST_STATUS_FAIL));
+  }
+  return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
+};
+
 const getSuggestPaymentInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
 
@@ -70,6 +107,7 @@ const getSuggestPaymentInfo = async (req: Request, res: Response) => {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.GET_SUGGEST_PAYMENT_INFO_FAIL));
   }
   return res.status(sc.OK).send(success(sc.OK, rm.GET_SUGGEST_PAYMENT_INFO_SUCCESS, data));
+
 };
 
 const suggestController = {
@@ -77,6 +115,7 @@ const suggestController = {
   deleteSuggest,
   raisePrice,
   updateInvoiceNumber,
+  updateStatus,
   getSuggestPaymentInfo,
 };
 
