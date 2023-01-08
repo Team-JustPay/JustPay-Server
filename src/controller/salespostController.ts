@@ -17,7 +17,7 @@ const salespostCreate = async (req: Request, res: Response) => {
   const { location } = image;
   const locations = certifications.map((file: { location: any }) => file.location);
 
-  const { userId } = res.locals; // jwt로 userId얻기
+  const { userId } = res.locals; // jwt로 userId 얻기
   const salesPostCreateDTO: CreateSalespostDTO = req.body;
 
   const salespost = await salespostService.createSalespost(
@@ -26,6 +26,9 @@ const salespostCreate = async (req: Request, res: Response) => {
     locations,
     salesPostCreateDTO,
   );
+  if (!salespost) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CREATE_SALESPOST_FAIL));
+  }
 
   return res.status(201).json({ status: 201, message: '판매글 생성 성공', data: salespost });
 };
@@ -33,6 +36,9 @@ const salespostCreate = async (req: Request, res: Response) => {
 const createSuggest = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { salespostId } = req.params;
+  if (!salespostId) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SALESPOST_ID_GET_FAIL));
+  }
   const suggestCreateDTO: SuggestCreateDTO = req.body;
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
   const location = image ? image.location : '';
@@ -53,12 +59,18 @@ const createSuggest = async (req: Request, res: Response) => {
 
 const createCertificationWord = async (req: Request, res: Response) => {
   const data = await salespostService.createCertificationWord();
+  if (!data) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CERTIFICATION_WORD_CREATE_FAIL));
+  }
   return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_WORD_CREATE, data));
 };
 
 const getCertifications = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
   const data = await salespostService.getCertifications(+salespostId);
+  if (!data) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CERTIFICATION_GET_FAIL));
+  }
   return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_GET, data));
 };
 
@@ -100,6 +112,10 @@ const getOneSalespost = async (req: Request, res: Response) => {
   const { userId } = res.locals;
 
   const data = await salespostService.getOneSalespost(+salespostId, userId);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.GET_ONE_SALESPOST_FAIL));
+  }
 
   return res.status(sc.OK).send(success(sc.OK, rm.GET_ONE_SALESPOST_SUCCESS, data));
 };

@@ -9,7 +9,6 @@ const signInUser = async (req: Request, res: Response) => {
   try {
     const userId = 4; // 더미 유저의 id
     const accessToken = jwtHandler.sign(userId);
-
     const result = {
       id: userId,
       accessToken,
@@ -17,7 +16,6 @@ const signInUser = async (req: Request, res: Response) => {
 
     res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
   } catch (e) {
-    // ? 서버 내부에서 오류 발생
     res
       .status(sc.INTERNAL_SERVER_ERROR)
       .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
