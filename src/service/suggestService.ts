@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+
+import dateParser from '../modules/date';
 const prisma = new PrismaClient();
 
 const getShippingInfo = async (suggestId: number) => {
@@ -162,6 +164,54 @@ const updateStatusInvoice = async (
   return data;
 };
 
+const getSuggestPaymentInfo = async (suggestId: number) => {
+  const data = await prisma.purchaseSuggest.findUnique({
+    where: {
+      id: suggestId,
+    },
+    select: {
+      id: true,
+      imageUrl: true,
+      price: true,
+      description: true,
+      status: true,
+      invoiceDeadline: true,
+      suggester: {
+        select: {
+          phoneNumber: true,
+          shippingInfo: {
+            select: {
+              receiverName: true,
+              address: true,
+              cuStoreName: true,
+              gsStoreName: true,
+            },
+          },
+        },
+      },
+      shippingOption: {
+        select: {
+          name: true,
+          price: true,
+        },
+      },
+    },
+  });
+
+  if (data?.price && data.shippingOption.price) {
+    const totalPrice = data.price + data.shippingOption.price;
+    const { invoiceDeadline, ...dataWithoutDeadline } = data;
+
+    const parsedDeadline = invoiceDeadline ? dateParser(invoiceDeadline) : null;
+
+    return {
+      ...dataWithoutDeadline,
+      totalPrice,
+      invoiceDeadline: parsedDeadline,
+    };
+  }
+};
+
 const suggestService = {
   getShippingInfo,
   deleteSuggest,
@@ -169,6 +219,7 @@ const suggestService = {
   updateInvoiceNumber,
   updateStatus,
   updateStatusInvoice,
+  getSuggestPaymentInfo,
 };
 
 export default suggestService;

@@ -14,4 +14,7 @@ router.patch('/:suggestId/price', auth, suggestController.raisePrice);
 router.patch('/:suggestId/invoice', auth, suggestController.updateInvoiceNumber);
 
 router.patch('/:suggestId/status', auth, suggestController.updateStatus);
+
+router.get('/:suggestId/payment', suggestController.getSuggestPaymentInfo);
+
 export default router;
