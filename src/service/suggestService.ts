@@ -250,6 +250,35 @@ const getSuggestDetail = async (suggestId: number, userId: number) => {
   return data;
 };
 
+const getInvoiceInfo = async (suggestId: number) => {
+  const invoiceInfo = await prisma.purchaseSuggest.findUnique({
+    where: {
+      id: suggestId,
+    },
+    select: {
+      invoiceDeadline: true,
+      invoiceNumber: true,
+      shippingOption: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const shippingName = invoiceInfo?.shippingOption.name;
+  const isPostOffice = shippingName === '일반우편' || shippingName === '준등기';
+  const shippingOption = isPostOffice ? '우체국 ' + shippingName : shippingName;
+
+  const data = {
+    ...invoiceInfo,
+    invoiceDeadline: dateParser(invoiceInfo?.invoiceDeadline || new Date()),
+    shippingOption,
+  };
+
+  return data;
+};
+
 const suggestService = {
   getShippingInfo,
   deleteSuggest,
@@ -259,6 +288,7 @@ const suggestService = {
   updateStatusInvoice,
   getSuggestPaymentInfo,
   getSuggestDetail,
+  getInvoiceInfo,
 };
 
 export default suggestService;
