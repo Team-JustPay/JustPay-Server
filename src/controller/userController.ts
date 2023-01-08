@@ -26,6 +26,13 @@ const geyMyInfo = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.USER_INFO_GET_SUCCESS, data));
 };
 
+
+const chageMyInfo = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
+  const { shippingInfo, ...userInfo } = req.body;
+  const data = await userService.chageMyInfo(+userId, userInfo, shippingInfo);
+  return res.status(sc.NO_CONTENT).send();
+
 const getMysuggests = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { isPurchased } = req.query;
@@ -41,12 +48,14 @@ const getMysuggests = async (req: Request, res: Response) => {
   }
 
   return res.status(sc.OK).send(success(sc.OK, rm.GET_MY_SUGGEST_LIST_SUCCESS, data));
+
 };
 
 const userController = {
   getMysalespost,
   getUserInfo,
   geyMyInfo,
+  chageMyInfo,
   getMysuggests,
 };
 
