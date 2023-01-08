@@ -61,4 +61,7 @@ export default {
 
   GET_ONE_SALESPOST_SUCCESS: 'salespost 세부 정보 조회',
   USER_INFO_GET_SUCCESS: '유저 정보 조회 성공',
+
+  GET_SUGGEST_PAYMENT_INFO_FAIL: '구매 제시 결제 정보 조회 실패',
+  GET_SUGGEST_PAYMENT_INFO_SUCCESS: '구매 제시 결제 정보 조회 성공',
 };

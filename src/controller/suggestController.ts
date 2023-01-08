@@ -57,11 +57,27 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_INVOICE_NUMBER_SUCCESS));
 };
 
+const getSuggestPaymentInfo = async (req: Request, res: Response) => {
+  const { suggestId } = req.params;
+
+  if (!suggestId) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_PAYMENT_INFO_FAIL));
+  }
+
+  const data = await suggestService.getSuggestPaymentInfo(+suggestId);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.GET_SUGGEST_PAYMENT_INFO_FAIL));
+  }
+  return res.status(sc.OK).send(success(sc.OK, rm.GET_SUGGEST_PAYMENT_INFO_SUCCESS, data));
+};
+
 const suggestController = {
   getShippingInfo,
   deleteSuggest,
   raisePrice,
   updateInvoiceNumber,
+  getSuggestPaymentInfo,
 };
 
 export default suggestController;
