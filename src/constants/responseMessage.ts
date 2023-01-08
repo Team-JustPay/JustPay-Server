@@ -49,6 +49,7 @@ export default {
 
   // 인증
   CERTIFICATION_WORD_CREATE: '인증 코드 생성 성공',
+  CERTIFICATION_WORD_CREATE_FAIL: '인증 코드 생성 실패',
 
   NO_IMAGE: '이미지 없음',
   CERTIFICATION_GET: '인증사진 조회 성공',
@@ -66,4 +67,18 @@ export default {
 
   GET_SUGGEST_PAYMENT_INFO_FAIL: '구매 제시 결제 정보 조회 실패',
   GET_SUGGEST_PAYMENT_INFO_SUCCESS: '구매 제시 결제 정보 조회 성공',
+
+  CERTIFICATION_GET_FAIL: '인증사진 조회 실패',
+  USER_ID_GET_FAIL: '유저 아이디 조회 실패',
+
+  CREATE_SALESPOST_FAIL: 'salespost 생성 실패',
+  SALESPOST_ID_GET_FAIL: 'salespost 아이디 조회 실패',
+
+  GET_ONE_SALESPOST_FAIL: 'salespost 세부 정보 조회 실패',
+  USER_INFO_GET_FAIL: '유저 정보 조회 실패',
+  IS_SALED_PARAM_NOT_EXIST: 'isSaled 파라미터가 없습니다.',
+  SALESPOST_GET_FAIL: 'salespost 조회 실패',
+  SHIPPING_INFO_NOT_EXIST: 'request body에  shippingInfo가 없습니다.',
+  USER_INFO_CHANGE_FAIL: '유저 정보 변경 실패',
+  GET_SHIPPING_INFO_FAIL: '배송 정보 조회 실패',
 };
