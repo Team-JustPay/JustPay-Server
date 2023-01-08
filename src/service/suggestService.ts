@@ -212,6 +212,89 @@ const getSuggestPaymentInfo = async (suggestId: number) => {
   }
 };
 
+const getSuggestDetail = async (suggestId: number, userId: number) => {
+  const suggestInfo = await prisma.purchaseSuggest.findUnique({
+    where: {
+      id: suggestId,
+    },
+    select: {
+      id: true,
+      imageUrl: true,
+      productCount: true,
+      purchaseOption: true,
+      price: true,
+      description: true,
+      status: true,
+      suggester: {
+        select: {
+          id: true,
+          profileImageUrl: true,
+          socialId: true,
+          nickName: true,
+        },
+      },
+      shippingOption: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const data = {
+    ...suggestInfo,
+    isMine: userId === suggestInfo?.suggester.id,
+    shippingOption: suggestInfo?.shippingOption.name,
+  };
+
+  return data;
+};
+
+const getInvoiceInfo = async (suggestId: number) => {
+  const invoiceInfo = await prisma.purchaseSuggest.findUnique({
+    where: {
+      id: suggestId,
+    },
+    select: {
+      invoiceDeadline: true,
+      invoiceNumber: true,
+      shippingOption: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const shippingName = invoiceInfo?.shippingOption.name;
+  const isPostOffice = shippingName === '일반우편' || shippingName === '준등기';
+  const shippingOption = isPostOffice ? '우체국 ' + shippingName : shippingName;
+
+  const data = {
+    ...invoiceInfo,
+    invoiceDeadline: dateParser(invoiceInfo?.invoiceDeadline || new Date()),
+    shippingOption,
+  };
+
+  return data;
+};
+
+const getSellorId = async (suggestId: number) => {
+  const data = await prisma.purchaseSuggest.findUnique({
+    where: {
+      id: suggestId,
+    },
+    select: {
+      salesPost: {
+        select: {
+          sellorId: true,
+        },
+      },
+    },
+  });
+  return data?.salesPost.sellorId;
+};
+
 const suggestService = {
   getShippingInfo,
   deleteSuggest,
@@ -220,6 +303,9 @@ const suggestService = {
   updateStatus,
   updateStatusInvoice,
   getSuggestPaymentInfo,
+  getSuggestDetail,
+  getInvoiceInfo,
+  getSellorId,
 };
 
 export default suggestService;
