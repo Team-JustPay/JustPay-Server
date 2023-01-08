@@ -116,6 +116,22 @@ const getSuggestPaymentInfo = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.GET_SUGGEST_PAYMENT_INFO_SUCCESS, data));
 };
 
+const getSuggestDetail = async (req: Request, res: Response) => {
+  const { suggestId } = req.params;
+  const { userId } = res.locals;
+
+  if (!suggestId) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_DETAIL_FAIL));
+  }
+
+  const data = await suggestService.getSuggestDetail(+suggestId, userId);
+
+  if (!data) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.GET_SUGGEST_DETAIL_FAIL));
+  }
+  return res.status(sc.OK).send(success(sc.OK, rm.GET_SUGGEST_DETAIL_SUCCESS, data));
+};
+
 const suggestController = {
   getShippingInfo,
   deleteSuggest,
@@ -123,6 +139,7 @@ const suggestController = {
   updateInvoiceNumber,
   updateStatus,
   getSuggestPaymentInfo,
+  getSuggestDetail,
 };
 
 export default suggestController;
