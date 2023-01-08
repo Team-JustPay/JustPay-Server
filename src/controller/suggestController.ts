@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 
 import { rm, sc } from '../constants';
+import { notificationMessages } from '../constants/notification';
 import { fail, success } from '../constants/response';
+import createNotification from '../modules/notification';
 import { suggestService } from '../service';
 
 const getShippingInfo = async (req: Request, res: Response) => {
@@ -49,6 +51,7 @@ const raisePrice = async (req: Request, res: Response) => {
 };
 
 const updateInvoiceNumber = async (req: Request, res: Response) => {
+  const { userId } = res.locals;
   const { suggestId } = req.params;
   const { invoiceNumber } = req.body;
 
@@ -61,6 +64,17 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.UPDATE_INVOICE_NUMBER_FAIL));
   }
+
+  const notification = createNotification(
+    userId,
+    notificationMessages.SELLOR_INVOICE_NUMBER_INPUT_COMPLETE,
+  );
+  if (!notification) {
+    return res
+      .status(sc.INTERNAL_SERVER_ERROR)
+      .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+  }
+
   return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_INVOICE_NUMBER_SUCCESS));
 };
 
