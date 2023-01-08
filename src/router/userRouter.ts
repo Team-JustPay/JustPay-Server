@@ -10,5 +10,6 @@ router.get('/my/info', auth, userController.geyMyInfo);
 router.put('/my/info', auth, userController.chageMyInfo);
 router.get('/:userId', userController.getUserInfo);
 router.get('/my/suggests', auth, userController.getMysuggests);
+router.get('/my/notifications', auth, userController.getMyNotifications);
 
 export default router;
