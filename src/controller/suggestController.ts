@@ -65,11 +65,11 @@ const updateStatus = async (req: Request, res: Response) => {
   if (!status) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
   }
-  if (!invoiceDeadline) {
-    if (status === 1) {
+
+  if (status !== 1) {
+    if (invoiceDeadline) {
       return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
     }
-
     const data = await suggestService.updateStatus(+suggestId, status);
 
     if (!data) {
@@ -78,6 +78,9 @@ const updateStatus = async (req: Request, res: Response) => {
     return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.UPDATE_SUGGEST_STATUS_SUCCESS));
   }
 
+  if (!invoiceDeadline) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+  }
   const data = await suggestService.updateStatusInvoice(
     +suggestId,
     userId,
