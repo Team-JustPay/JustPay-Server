@@ -95,7 +95,6 @@ const chageMyInfo = async (userId: number, userInfo: UserInfoDTO, shippingInfo: 
   return data;
 };
 
-
 const getMysuggests = async (userId: number, isPurchased: string) => {
   const statusArr = isPurchased === 'true' ? [3] : [0, 1, 2];
   const data = await prisma.purchaseSuggest.findMany({
