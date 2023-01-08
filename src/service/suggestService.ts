@@ -172,6 +172,8 @@ const getSuggestPaymentInfo = async (suggestId: number) => {
     select: {
       id: true,
       imageUrl: true,
+      productCount: true,
+      purchaseOption: true,
       price: true,
       description: true,
       status: true,
