@@ -212,6 +212,44 @@ const getSuggestPaymentInfo = async (suggestId: number) => {
   }
 };
 
+const getSuggestDetail = async (suggestId: number, userId: number) => {
+  const suggestInfo = await prisma.purchaseSuggest.findUnique({
+    where: {
+      id: suggestId,
+    },
+    select: {
+      id: true,
+      imageUrl: true,
+      productCount: true,
+      purchaseOption: true,
+      price: true,
+      description: true,
+      status: true,
+      suggester: {
+        select: {
+          id: true,
+          profileImageUrl: true,
+          socialId: true,
+          nickName: true,
+        },
+      },
+      shippingOption: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const data = {
+    ...suggestInfo,
+    isMine: userId === suggestInfo?.suggester.id,
+    shippingOption: suggestInfo?.shippingOption.name,
+  };
+
+  return data;
+};
+
 const suggestService = {
   getShippingInfo,
   deleteSuggest,
@@ -220,6 +258,7 @@ const suggestService = {
   updateStatus,
   updateStatusInvoice,
   getSuggestPaymentInfo,
+  getSuggestDetail,
 };
 
 export default suggestService;
