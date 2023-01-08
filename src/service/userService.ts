@@ -19,6 +19,11 @@ const getMysalespost = async (userId: number, status: number) => {
       price: true,
       status: true,
     },
+    orderBy: [
+      {
+        createdAt: 'desc',
+      },
+    ],
   });
 
   return data;
