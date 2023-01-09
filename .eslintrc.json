@@ -1,7 +1,8 @@
     {
         "env": {
           "es2021": true,
-          "node": true
+          "node": true,
+          "jest": true
         },
         "extends": [
           "eslint:recommended",
@@ -64,5 +65,5 @@
           ],
           "import/prefer-default-export": "off"
         },
-        "ignorePatterns": ["dist/", "node_modules/", "jest.config.js", "tests"]
+        "ignorePatterns": ["dist/", "node_modules/", "jest.config.js", "babel.config.js", "tests"]
       }
