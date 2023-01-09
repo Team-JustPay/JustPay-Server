@@ -33,8 +33,12 @@ const getMysalespost = async (req: Request, res: Response) => {
 
 const geyMyInfo = async (req: Request, res: Response) => {
   const { userId } = res.locals;
+  const { addressSplit } = req.query;
+  if (!addressSplit) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.USER_INFO_GET_FAIL));
+  }
 
-  const data = await userService.getMyInfo(+userId);
+  const data = await userService.getMyInfo(+userId, addressSplit as string);
   if (!data) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.USER_INFO_GET_FAIL));
   }
