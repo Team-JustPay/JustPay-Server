@@ -13,7 +13,7 @@
         ],
         "parser": "@typescript-eslint/parser",
         "parserOptions": {
-          "project": "./tsconfig.json",
+          "project": ["./tsconfig.json", "./jest.config.js"],
           "ecmaVersion": "latest",
           "sourceType": "module"
         },
@@ -64,5 +64,5 @@
           ],
           "import/prefer-default-export": "off"
         },
-        "ignorePatterns": ["dist/", "node_modules/"]
+        "ignorePatterns": ["dist/", "node_modules/", "jest.config.js", "tests"]
       }
