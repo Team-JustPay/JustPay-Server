@@ -48,6 +48,7 @@ const getUserInfo = async (userId: number) => {
       purchaseMoney: true,
       openChatUrl: true,
       twitterMessageUrl: true,
+      nickName: true,
     },
   });
   return data;
