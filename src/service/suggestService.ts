@@ -240,6 +240,12 @@ const getSuggestDetail = async (suggestId: number, userId: number) => {
           name: true,
         },
       },
+      salesPost: {
+        select: {
+          id: true,
+          priceOption: true,
+        },
+      },
     },
   });
 
