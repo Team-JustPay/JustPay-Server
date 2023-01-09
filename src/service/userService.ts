@@ -54,7 +54,7 @@ const getUserInfo = async (userId: number) => {
   return data;
 };
 
-const getMyInfo = async (userId: number) => {
+const getMyInfo = async (userId: number, addressSplit: string) => {
   const data = await prisma.user.findUnique({
     where: {
       id: userId,
@@ -79,13 +79,31 @@ const getMyInfo = async (userId: number) => {
       shippingInfo: {
         select: {
           receiverName: true,
+          zipCode: true,
           address: true,
+          detailAddress: true,
           cuStoreName: true,
           gsStoreName: true,
         },
       },
     },
   });
+
+  if (addressSplit === 'false' && data?.shippingInfo) {
+    const { shippingInfo, ...dataWithoutShippingInfo } = data;
+    const newAddress =
+      '(' +
+      shippingInfo?.zipCode +
+      ') ' +
+      shippingInfo?.address +
+      ' ' +
+      shippingInfo?.detailAddress;
+
+    const { zipCode, detailAddress, ...newShippingInfo } = shippingInfo;
+    newShippingInfo.address = newAddress;
+    return { ...dataWithoutShippingInfo, shippingInfo: newShippingInfo };
+  }
+
   return data;
 };
 

@@ -43,15 +43,17 @@ model Notification {
 }
 
 model ShippingInfo {
-  id           Int      @id @unique @default(autoincrement())
-  receiverName String?  @db.VarChar(100)
-  address      String?  @db.VarChar(100)
-  cuStoreName  String?  @db.VarChar(100)
-  gsStoreName  String?  @db.VarChar(100)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  userId       Int      @unique
-  user         User     @relation(fields: [userId], references: [id])
+  id            Int      @id @unique @default(autoincrement())
+  receiverName  String?  @db.VarChar(100)
+  zipCode       String?  @db.VarChar(100)
+  address       String?  @db.VarChar(100)
+  detailAddress String?  @db.VarChar(100)
+  cuStoreName   String?  @db.VarChar(100)
+  gsStoreName   String?  @db.VarChar(100)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        Int      @unique
+  user          User     @relation(fields: [userId], references: [id])
 }
 
 model SalesPost {
