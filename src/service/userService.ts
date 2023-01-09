@@ -89,17 +89,19 @@ const getMyInfo = async (userId: number, addressSplit: string) => {
     },
   });
 
-  if (addressSplit === 'true' && data?.shippingInfo) {
+  if (addressSplit === 'false' && data?.shippingInfo) {
+    const { shippingInfo, ...dataWithoutShippingInfo } = data;
     const newAddress =
       '(' +
-      data.shippingInfo?.zipCode +
+      shippingInfo?.zipCode +
       ') ' +
-      data.shippingInfo?.address +
+      shippingInfo?.address +
       ' ' +
-      data.shippingInfo?.detailAddress;
-    const { zipCode, detailAddress, ...newShippingInfo } = data.shippingInfo;
-    if (data?.shippingInfo) data.shippingInfo.address = newAddress;
-    return data;
+      shippingInfo?.detailAddress;
+
+    const { zipCode, detailAddress, ...newShippingInfo } = shippingInfo;
+    newShippingInfo.address = newAddress;
+    return { ...dataWithoutShippingInfo, shippingInfo: newShippingInfo };
   }
 
   return data;
