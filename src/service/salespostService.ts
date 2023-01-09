@@ -5,6 +5,7 @@ import { wordList } from '../constants/wordList';
 import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { GetPurchaseListDTO } from '../interfaces/salespost/getPurchaseListDTO';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
+import dateParser from '../modules/date';
 import getShippingOptionId from '../modules/shippingOption';
 
 const prisma = new PrismaClient();
@@ -224,7 +225,13 @@ const getOneSalespost = async (salespostId: number, userId: number) => {
   });
 
   const { purchaseSuggests, ShippingOptions, ...dataWithtoutSuggests } = data as any;
-  return { ...dataWithtoutSuggests, isMine, highestPrice, ShippingOptions: parsedShippingOptions };
+  return {
+    ...dataWithtoutSuggests,
+    isMine,
+    highestPrice,
+    ShippingOptions: parsedShippingOptions,
+    createdAt: dateParser(dataWithtoutSuggests.createdAt),
+  };
 };
 
 const salespostService = {
