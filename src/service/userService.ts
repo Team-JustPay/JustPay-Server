@@ -48,6 +48,7 @@ const getUserInfo = async (userId: number) => {
       purchaseMoney: true,
       openChatUrl: true,
       twitterMessageUrl: true,
+      nickName: true,
     },
   });
   return data;
@@ -73,6 +74,8 @@ const getMyInfo = async (userId: number) => {
       purchaseMoney: true,
       openChatUrl: true,
       twitterMessageUrl: true,
+      depositorName: true,
+      bankName: true,
       shippingInfo: {
         select: {
           receiverName: true,

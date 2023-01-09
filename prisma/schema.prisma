@@ -25,6 +25,8 @@ model User {
   socialId          String            @db.VarChar(100)
   twitterMessageUrl String?           @db.VarChar(100)
   updatedAt         DateTime          @updatedAt
+  bankName          String?           @db.VarChar(100)
+  depositorName     String?           @db.VarChar(100)
   notifications     Notification[]
   purchaseSuggests  PurchaseSuggest[]
   salesPosts        SalesPost[]
