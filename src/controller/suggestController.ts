@@ -194,7 +194,7 @@ const getSuggestDetail = async (req: Request, res: Response) => {
 
   const data = await suggestService.getSuggestDetail(+suggestId, userId);
 
-  if (!data) {
+  if (!data.id) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.GET_SUGGEST_DETAIL_FAIL));
   }
   return res.status(sc.OK).send(success(sc.OK, rm.GET_SUGGEST_DETAIL_SUCCESS, data));
