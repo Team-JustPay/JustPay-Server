@@ -36,7 +36,7 @@
               "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
             }
           ],
-          "no-use-before-define": ["error", { "functions": false }],
+          "no-use-before-define": ["off", { "functions": false }],
           "no-unused-expressions": ["error", { "allowTaggedTemplates": true }],
           "prefer-const": [
             "error",
