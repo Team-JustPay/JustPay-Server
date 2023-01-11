@@ -8,11 +8,15 @@ afterAll(async () => {
 });
 
 describe('auth 라우터 테스트', () => {
-  describe('소셜 로그인/회원가입 [GET] ~/auth/login', () => {
-    test('200 - 로그인 성공', async () => {
+  describe('임시 로그인 [GET] ~/auth/login', () => {
+    test('200 - 임시 로그인 성공', async () => {
       await request(app)
-        .get('/auth/login')
+        .post('/auth/login')
         .set('Content-Type', 'application/json')
+        .send({
+          oauthToken: "<token>",
+		      oauthTokenSecret: "<token_secret>"
+        })
         .expect(200)
         .expect('Content-Type', /json/);
     });
