@@ -13,7 +13,7 @@ const createTestUser = async () => {
     },
   });
 
-  const shippingInfo = await prisma.shippingInfo.create({
+  await prisma.shippingInfo.create({
     data: {
       userId: testUser.id,
     },
@@ -38,4 +38,18 @@ const deleteTestUser = async (userId: number) => {
   return testUser;
 };
 
-module.exports = { createTestUser, deleteTestUser };
+const deleteTestSalesPost = async (salespostId: number) => {
+  await prisma.certification.deleteMany({
+    where: {
+      salesPostId: salespostId,
+    },
+  });
+
+  await prisma.salesPost.delete({
+    where: {
+      id: salespostId,
+    },
+  });
+};
+
+module.exports = { createTestUser, deleteTestUser, deleteTestSalesPost };
