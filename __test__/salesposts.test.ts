@@ -30,13 +30,14 @@ describe('salesposts 라우터 테스트', ()=>{
       .attach('certifications', image)
       .attach('certifications', image)
       .attach('mainImage', image)
-      .field('productCount', '3')
+      .field('productCount', 3)
       .field('salesOption', 'BULK')
       .field('priceOption', 'PRICE_OFFER')
-      .field('price', '30000')
+      .field('price', 30000)
       .field('certificationWord', '테스트')
       .field('description', '테스트 판매글')
-      .field('shippingOptions', '["GS택배", "일반우편"]')
+      .field('shippingOptions', "GS택배")
+      .field('shippingOptions', "GS택배")
       .expect(201)
       .expect('Content-Type', /json/);
       

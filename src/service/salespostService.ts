@@ -16,7 +16,7 @@ const createSalespost = async (
   locations: string[],
   salesPostCreateDTO: CreateSalespostDTO,
 ) => {
-  const shippingOptions = JSON.parse(salesPostCreateDTO.shippingOptions);
+  const shippingOptions = salesPostCreateDTO.shippingOptions;
 
   const shippingOptionIds = [];
   for (const option of shippingOptions) {
