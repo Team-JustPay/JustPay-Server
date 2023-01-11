@@ -277,43 +277,66 @@ API
 ## 🏛 프로젝트 폴더 구조
 
 ```
+__test__
 prisma
 src
 ├── config
 │   ├── index.ts
 │   └── s3Config.ts
+├── constants
+│   ├── index.ts
+│   ├── notification.ts
+│   ├── response.ts
+│   ├── responseMessage.ts
+│   ├── shippingInfo.ts
+│   ├── statusCode.ts
+│   ├── tokenType.ts
+│   └── wordList.ts
 ├── controller
 │   ├── authController.ts
 │   ├── index.ts
 │   ├── salespostController.ts
 │   ├── suggestController.ts
 │   └── userController.ts
+├── db
+│   ├── client.ts
+│   └── data.ts
 ├── index.ts
 ├── interfaces
-│   ├── common
-│   │   ├── index.ts
-│   │   ├── response.ts
-│   │   ├── responseMessage.ts
-│   │   ├── statusCode.ts
-│   │   └── tokenType.ts
-│   └── image
-│       └── imageCreateResponseDTO.ts
+│   ├── image
+│   │   └── imageCreateResponseDTO.ts
+│   ├── salespost
+│   │   ├── createSalespostDTO.ts
+│   │   ├── getPurchaseListDTO.ts
+│   │   └── suggestCreateDTO.ts
+│   ├── type
+│   │   └── shippingInfo.ts
+│   └── user
+│       └── userUpdateDTO.ts
 ├── middlewares
 │   ├── auth.ts
 │   ├── index.ts
 │   └── upload.ts
 ├── modules
-│   └── jwtHandler.ts
+│   ├── date.ts
+│   ├── dateNotification.ts
+│   ├── jwtHandler.ts
+│   ├── notification.ts
+│   ├── shippingOption.ts
+│   ├── slack.ts
+│   └── testModule.ts
 ├── router
 │   ├── authRouter.ts
 │   ├── index.ts
 │   ├── salespostRouter.ts
 │   ├── suggestRouter.ts
 │   └── userRouter.ts
-└── service
-    ├── authService.ts
-    ├── index.ts
-    ├── salespostService.ts
-    ├── suggestService.ts
-    └── userService.ts
+├── server.ts
+├── service
+│   ├── authService.ts
+│   ├── index.ts
+│   ├── salespostService.ts
+│   ├── suggestService.ts
+│   └── userService.ts
+└── singleton.ts
 ```
