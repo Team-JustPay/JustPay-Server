@@ -1,8 +1,6 @@
 const request = require('supertest');
-require('dotenv').config();
 
 const app = require('../src/server.ts');
-
 let server = app.listen(4000);
 
 afterAll(async () => {

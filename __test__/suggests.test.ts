@@ -2,7 +2,7 @@ const request = require('supertest');
 import { salespostService } from '../src/service';
 import jwtHandler from '../src/modules/jwtHandler';
 
-const data = require('../src/db/data.ts');
+const {suggest} = require('../src/db/data.ts');
 const app = require('../src/server.ts');
 let server = app.listen(4000);
 
@@ -17,7 +17,7 @@ beforeAll(async () => {
   suggestForTest = await salespostService.createSuggest(
     4,
     2,
-    data.suggest,
+    suggest,
     '',
   );
 
