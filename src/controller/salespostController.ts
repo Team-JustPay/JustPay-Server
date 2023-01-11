@@ -60,7 +60,9 @@ const createSuggest = async (req: Request, res: Response) => {
 const createCertificationWord = async (req: Request, res: Response) => {
   const data = await salespostService.createCertificationWord();
   if (!data) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CERTIFICATION_WORD_CREATE_FAIL));
+    return res
+      .status(sc.INTERNAL_SERVER_ERROR)
+      .send(fail(sc.INTERNAL_SERVER_ERROR, rm.CERTIFICATION_WORD_CREATE_FAIL));
   }
   return res.status(sc.OK).send(success(sc.OK, rm.CERTIFICATION_WORD_CREATE, data));
 };
@@ -86,7 +88,7 @@ const statusChange = async (req: Request, res: Response) => {
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.STATUS_FAIL));
   }
-  return res.status(sc.OK).send(success(sc.OK, rm.STATUS_CHANGE));
+  return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.STATUS_CHANGE));
 };
 
 const getPurchaseList = async (req: Request, res: Response) => {

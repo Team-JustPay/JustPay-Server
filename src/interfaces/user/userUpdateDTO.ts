@@ -3,6 +3,8 @@ export interface ShippingInfoDTO {
   address: string;
   cuStoreName: string;
   gsStoreName: string;
+  zipCode: string;
+  detailAddress: string;
 }
 
 export interface UserInfoDTO {
@@ -19,5 +21,7 @@ export interface UserInfoDTO {
   purchaseMoney: number;
   openChatUrl: string;
   twitterMessageUrl: string;
+  bankName: string;
+  depositorName: string;
   shippingInfo: ShippingInfoDTO;
 }
