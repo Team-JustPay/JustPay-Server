@@ -88,7 +88,7 @@ const statusChange = async (req: Request, res: Response) => {
   if (!data) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.STATUS_FAIL));
   }
-  return res.status(sc.OK).send(success(sc.OK, rm.STATUS_CHANGE));
+  return res.status(sc.NO_CONTENT).send(success(sc.NO_CONTENT, rm.STATUS_CHANGE));
 };
 
 const getPurchaseList = async (req: Request, res: Response) => {
