@@ -9,7 +9,17 @@
 </br>
 
 ## ⭐️서비스 핵심기능 소개
-트위터 DM 없는 아이돌 굿즈 최고가 매칭 서비스
+1️⃣</br>
+포토카드를 쉽게 판매하도록 도와주는 판매옵션이 한눈에 보이는 판매글 피드를 제공합니다.</br>
+판매자의 신뢰도를 높여주는 3가지 PAY정보도 함께 제공됩니다.</br>
+<img width="200" alt="3 1 1 판매중 GNB" src="https://user-images.githubusercontent.com/67372977/211900938-2fd0b7b3-2f07-4829-84f1-6cc33d7238f4.png"></br></br>
+2️⃣</br>
+트위터DM 을 일일이 확인할 필요 없이 구매자들의 제시 옵션을 한눈에 파악할 수 있는 매칭 중 목록을 제공합니다.</br>
+<img width="200" alt="4 1 판매중 GNB - 판매중 리스트" src="https://user-images.githubusercontent.com/67372977/211901330-e2624a83-b2dd-439a-9324-9f2cc7aa8d9e.png"></br></br>
+3️⃣</br>
+판매글을 올리고, 판매글에 구매 제시를 하여 쉽고 안전한 거래를 할 수 있도록 도와줍니다.</br>
+<img width="200" alt="8 3 2 2개일부+제시가격" src="https://user-images.githubusercontent.com/67372977/211901599-96611bdd-988d-41c7-b322-03c83dc63046.png">
+<img width="200" alt="판매글 작성 - 대표사진 등록후 -일부 판매" src="https://user-images.githubusercontent.com/67372977/211901613-82f57e8e-db4a-4287-bd78-953a327f0690.png"></br>
 
 </br>
 
