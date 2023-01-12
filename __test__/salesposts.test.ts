@@ -62,6 +62,82 @@ describe('salesposts 라우터 테스트', ()=>{
 
       testSuggestPost = _body.data.id;
     });
+    test('404 - salespostId가 없습니다', async () => {
+      await request(app)
+      .post(`/salesposts/-1/suggest`)
+      .set('Content-Type', 'multipart/form-data')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('image', image)
+      .field('price', '30000')
+      .field('purchaseOption', 'BULK')
+      .field('productCount', 2)
+      .field('description', '설명')
+      .field('shippingOption', '일반우편')
+      .expect(404)
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .post(`/salesposts/${testSalesPost}/suggest`)
+      .set('Content-Type', 'multipart/form-data')
+      .attach('image', image)
+      .field('price', '30000')
+      .field('purchaseOption', 'BULK')
+      .field('productCount', 2)
+      .field('description', '설명')
+      .field('shippingOption', '일반우편')
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .post(`/salesposts/${testSalesPost}/suggest`)
+      .set('Content-Type', 'multipart/form-data')
+      .set('Authorization', `Bearer differentToken`)
+      .attach('image', image)
+      .field('price', '30000')
+      .field('purchaseOption', 'BULK')
+      .field('productCount', 2)
+      .field('description', '설명')
+      .field('shippingOption', '일반우편')
+      .expect(401)
+    });
+    test('400 - purchaseOption이 유효하지 않습니다.(BULK, PARTIAL)', async () => {
+      await request(app)
+      .post(`/salesposts/${testSalesPost}/suggest`)
+      .set('Content-Type', 'multipart/form-data')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('image', image)
+      .field('price', '30000')
+      .field('purchaseOption', 'something')
+      .field('productCount', 2)
+      .field('description', '설명')
+      .field('shippingOption', '일반우편')
+      .expect(400)
+    });
+    test('400 - shippingOption이 유효하지 않습니다.(일반우편, 준등기, 우체국택배, GS택배, CU택배)', async () => {
+      await request(app)
+      .post(`/salesposts/${testSalesPost}/suggest`)
+      .set('Content-Type', 'multipart/form-data')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('image', image)
+      .field('price', '30000')
+      .field('purchaseOption', 'BULK')
+      .field('productCount', 2)
+      .field('description', '설명')
+      .field('shippingOption', '끼리택배')
+      .expect(400)
+    });
+    test('400 - request body에 필요한 값이 없습니다', async () => {
+      await request(app)
+      .post(`/salesposts/${testSalesPost}/suggest`)
+      .set('Content-Type', 'multipart/form-data')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('image', image)
+      .field('purchaseOption', 'BULK')
+      .field('productCount', 2)
+      .field('description', '설명')
+      .field('shippingOption', '일반우편')
+      .expect(400)
+    });
   }); 
 
   describe('판매글 정보 조회 [GET] ~/salesposts/:salespostId', () => {
@@ -159,9 +235,22 @@ describe('salesposts 라우터 테스트', ()=>{
       await request(app)
       .patch(`/salesposts/${testSalesPost}/status`)
       .set('Content-Type', 'application/json',)
-      .set('Authorization', `Bearer ${token}`)
       .send({status: 1})
       .expect(204)
+    });
+    test('404 - salespostId가 없습니다', async () => {
+      await request(app)
+      .patch(`/salesposts/-1/status`)
+      .set('Content-Type', 'application/json',)
+      .send({status: 1})
+      .expect(404)
+    });
+    test('400 - status 번호가 유효하지 않습니다', async () => {
+      await request(app)
+      .patch(`/salesposts/${testSalesPost}/status`)
+      .set('Content-Type', 'application/json',)
+      .send({status: 5})
+      .expect(400)
     });
   });
 
