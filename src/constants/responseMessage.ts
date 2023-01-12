@@ -90,4 +90,6 @@ export default {
 
   SUGGEST_ID_NOT_EXIST: 'suggestId가 없습니다.',
   SALESPOST_ID_NOT_EXIST: 'salespostId가 없습니다.',
+
+  PARAM_TRUE_FALSE_UNVALID: '파라미터가 true, false가 아닙니다.',
 };

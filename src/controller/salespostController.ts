@@ -117,8 +117,8 @@ const getPurchaseList = async (req: Request, res: Response) => {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
   }
 
-  if (!isMatched) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_LIST_FAIL));
+  if (isMatched !== 'true' && isMatched !== 'false') {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PARAM_TRUE_FALSE_UNVALID));
   }
 
   const data = await salespostService.getPurchaseList(userId, +salespostId, isMatched as string);
