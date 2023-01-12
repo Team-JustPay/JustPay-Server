@@ -73,6 +73,26 @@ describe('salesposts 라우터 테스트', ()=>{
       .expect(200)
       .expect('Content-Type', /json/);
     });
+    test('404 - salespostId가 없습니다', async () => {
+      await request(app)
+      .get(`/salesposts`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(404)
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .get(`/salesposts/${testSalesPost}`)
+      .set('Content-Type', 'application/json',)
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .get(`/salesposts/${testSalesPost}`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer differentToken`)
+      .expect(401)
+    });
   });
   
   describe('인증사진 조회 [GET] ~/salesposts/:salespostId/certifications', () => {
@@ -80,9 +100,14 @@ describe('salesposts 라우터 테스트', ()=>{
       await request(app)
       .get(`/salesposts/${testSalesPost}/certifications`)
       .set('Content-Type', 'application/json',)
-      .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .expect('Content-Type', /json/);
+    });
+    test('404 - salespostId가 없습니다', async () => {
+      await request(app)
+      .get(`/salesposts/-1/certifications`)
+      .set('Content-Type', 'application/json',)
+      .expect(404)
     });
   });
   
@@ -96,10 +121,41 @@ describe('salesposts 라우터 테스트', ()=>{
       .expect(200)
       .expect('Content-Type', /json/);
     });
+    test('404 - salespostId가 없습니다', async () => {
+      await request(app)
+      .get(`/salesposts/-1/suggests`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .query({isMatched: 'false'})
+      .expect(404)
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .get(`/salesposts/${testSalesPost}/suggests`)
+      .set('Content-Type', 'application/json',)
+      .query({isMatched: 'false'})
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .get(`/salesposts/${testSalesPost}/suggests`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer differentToken`)
+      .query({isMatched: 'false'})
+      .expect(401)
+    });
+    test('400 - 파라미터가 true, false가 아닙니다', async () => {
+      await request(app)
+      .get(`/salesposts/${testSalesPost}/suggests`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .query({isMatched: 'something'})
+      .expect(400)
+    });
   });
   
-  describe('판매글 상태 조회 [PATCH] ~/salesposts/:salespostId/status', () => {
-    test('204 - 판매글 상태 조회 성공', async () => {
+  describe('판매글 상태 변경 [PATCH] ~/salesposts/:salespostId/status', () => {
+    test('204 - 판매글 상태 변경 성공', async () => {
       await request(app)
       .patch(`/salesposts/${testSalesPost}/status`)
       .set('Content-Type', 'application/json',)
