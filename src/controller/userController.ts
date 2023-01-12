@@ -19,9 +19,11 @@ const getUserInfo = async (req: Request, res: Response) => {
 const getMysalespost = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { isSaled } = req.query;
-  if (!isSaled) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.IS_SALED_PARAM_NOT_EXIST));
+
+  if (isSaled !== 'true' && isSaled !== 'false') {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PARAM_TRUE_FALSE_UNVALID));
   }
+
   const status = isSaled === 'true' ? 1 : 0; // 1이 판매종료
 
   const data = await userService.getMysalespost(userId, status);
@@ -64,8 +66,8 @@ const getMysuggests = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { isPurchased } = req.query;
 
-  if (!isPurchased) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_MY_SUGGEST_LIST_FAIL));
+  if (isPurchased !== 'true' && isPurchased !== 'false') {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PARAM_TRUE_FALSE_UNVALID));
   }
 
   const data = await userService.getMysuggests(userId, isPurchased as string);

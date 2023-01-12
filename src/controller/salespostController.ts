@@ -4,6 +4,7 @@ import { rm, sc } from '../constants';
 import { fail, success } from '../constants/response';
 import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
+import existCheck from '../modules/existCheck';
 import { salespostService } from '../service';
 
 const salespostCreate = async (req: Request, res: Response) => {
@@ -36,9 +37,12 @@ const salespostCreate = async (req: Request, res: Response) => {
 const createSuggest = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { salespostId } = req.params;
-  if (!salespostId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SALESPOST_ID_GET_FAIL));
+
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
+  if (!salespostExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
   }
+
   const suggestCreateDTO: SuggestCreateDTO = req.body;
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
   const location = image ? image.location : '';
@@ -69,6 +73,12 @@ const createCertificationWord = async (req: Request, res: Response) => {
 
 const getCertifications = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
+
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
+  if (!salespostExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
+  }
+
   const data = await salespostService.getCertifications(+salespostId);
   if (!data) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CERTIFICATION_GET_FAIL));
@@ -78,6 +88,12 @@ const getCertifications = async (req: Request, res: Response) => {
 
 const statusChange = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
+
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
+  if (!salespostExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
+  }
+
   const status = req.body.status;
   if (!(status in [0, 1])) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.STATUS_NUMBER_ERROR));
@@ -96,8 +112,13 @@ const getPurchaseList = async (req: Request, res: Response) => {
   const { isMatched } = req.query;
   const { userId } = res.locals;
 
-  if (!salespostId || !isMatched) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_LIST_FAIL));
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
+  if (!salespostExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
+  }
+
+  if (isMatched !== 'true' && isMatched !== 'false') {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PARAM_TRUE_FALSE_UNVALID));
   }
 
   const data = await salespostService.getPurchaseList(userId, +salespostId, isMatched as string);
@@ -112,6 +133,11 @@ const getPurchaseList = async (req: Request, res: Response) => {
 const getOneSalespost = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
   const { userId } = res.locals;
+
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
+  if (!salespostExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
+  }
 
   const data = await salespostService.getOneSalespost(+salespostId, userId);
 
