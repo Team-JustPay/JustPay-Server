@@ -190,8 +190,9 @@ const getSuggestDetail = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
   const { userId } = res.locals;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_DETAIL_FAIL));
+  const suggestExist = await checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
 
   const data = await suggestService.getSuggestDetail(+suggestId, userId);
