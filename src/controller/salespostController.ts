@@ -5,6 +5,7 @@ import { fail, success } from '../constants/response';
 import { CreateSalespostDTO } from '../interfaces/salespost/createSalespostDTO';
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import existCheck from '../modules/existCheck';
+import sendSlackMessage from '../modules/slack';
 import { salespostService } from '../service';
 
 const salespostCreate = async (req: Request, res: Response) => {
@@ -130,6 +131,7 @@ const createSuggest = async (req: Request, res: Response) => {
 const createCertificationWord = async (req: Request, res: Response) => {
   const data = await salespostService.createCertificationWord();
   if (!data) {
+    sendSlackMessage(rm.INTERNAL_SERVER_ERROR);
     return res
       .status(sc.INTERNAL_SERVER_ERROR)
       .send(fail(sc.INTERNAL_SERVER_ERROR, rm.CERTIFICATION_WORD_CREATE_FAIL));

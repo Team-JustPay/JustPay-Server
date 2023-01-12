@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { rm, sc } from '../constants';
 import { fail, success } from '../constants/response';
 import jwtHandler from '../modules/jwtHandler';
+import sendSlackMessage from '../modules/slack';
 
 //* 로그인
 const signInUser = async (req: Request, res: Response) => {
@@ -16,6 +17,7 @@ const signInUser = async (req: Request, res: Response) => {
 
     res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
   } catch (e) {
+    sendSlackMessage(rm.INTERNAL_SERVER_ERROR);
     res
       .status(sc.INTERNAL_SERVER_ERROR)
       .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
