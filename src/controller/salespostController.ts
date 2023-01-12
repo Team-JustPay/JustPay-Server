@@ -33,10 +33,25 @@ const salespostCreate = async (req: Request, res: Response) => {
     !certifications ||
     !salesPostCreateDTO.productCount ||
     !salesPostCreateDTO.price ||
-    !salesPostCreateDTO.certificationWord
+    !salesPostCreateDTO.certificationWord ||
+    !salesPostCreateDTO.shippingOptions
   ) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.REQUEST_BODY_REQUIRED_INVALID));
   } // description은 빈 상태로 올 수 있으니 제외
+  for (const option of salesPostCreateDTO.shippingOptions) {
+    console.log(option);
+    if (
+      !(
+        option === '일반우편' ||
+        option === '준등기' ||
+        option === '우체국택배' ||
+        option === 'GS택배' ||
+        option === 'CU택배'
+      )
+    ) {
+      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SHIPPING_OPTION_INVALID));
+    }
+  }
 
   const image = mainImage[0];
   const { location } = image;
