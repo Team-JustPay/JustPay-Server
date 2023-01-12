@@ -44,6 +44,24 @@ const createSuggest = async (req: Request, res: Response) => {
   }
 
   const suggestCreateDTO: SuggestCreateDTO = req.body;
+  if (
+    !(suggestCreateDTO.purchaseOption === 'BULK' || suggestCreateDTO.purchaseOption === 'PARTIAL')
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PURCHASE_OPTION_INVALID));
+  }
+
+  if (
+    !(
+      suggestCreateDTO.shippingOption === '일반우편' ||
+      suggestCreateDTO.shippingOption === '준등기' ||
+      suggestCreateDTO.shippingOption === '우체국택배' ||
+      suggestCreateDTO.shippingOption === 'GS택배' ||
+      suggestCreateDTO.shippingOption === 'CU택배'
+    )
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SHIPPING_OPTION_INVALID));
+  }
+
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
   const location = image ? image.location : '';
 

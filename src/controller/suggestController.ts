@@ -77,6 +77,10 @@ const raisePrice = async (req: Request, res: Response) => {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
 
+  if (!price) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PRICE_NOT_EXIST));
+  }
+
   const data = await suggestService.raisePrice(+suggestId, price);
 
   if (!data) {
@@ -93,6 +97,10 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
   const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
+  }
+
+  if (!invoiceNumber) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.INVOICE_NUMBER_NOT_EXIST));
   }
 
   const data = await suggestService.updateInvoiceNumber(+suggestId, invoiceNumber);
