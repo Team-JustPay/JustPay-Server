@@ -130,7 +130,7 @@ const updateStatus = async (req: Request, res: Response) => {
 
   if (status !== 1) {
     if (invoiceDeadline) {
-      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.INVOICE_DEADLINE_NOT_EXIST));
+      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.INVOICE_DEADLINE_INVALID));
     }
     const data = await suggestService.updateStatus(+suggestId, status);
 
@@ -154,7 +154,7 @@ const updateStatus = async (req: Request, res: Response) => {
   }
 
   if (!invoiceDeadline) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.INVOICE_DEADLINE_INVALID));
   }
   const data = await suggestService.updateStatusInvoice(
     +suggestId,

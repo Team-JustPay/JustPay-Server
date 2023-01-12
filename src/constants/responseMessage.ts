@@ -92,6 +92,5 @@ export default {
   SALESPOST_ID_NOT_EXIST: 'salespostId가 없습니다.',
 
   PARAM_TRUE_FALSE_UNVALID: '파라미터가 true, false가 아닙니다.',
-
-  INVOICE_DEADLINE_NOT_EXIST: 'invoiceDeadline이 없습니다.',
+  INVOICE_DEADLINE_INVALID: 'status는 1인 경우만 invoiceDeadline 필요',
 };
