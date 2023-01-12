@@ -63,6 +63,18 @@ const createSuggest = async (req: Request, res: Response) => {
   }
 
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
+
+  if (
+    !(
+      image ||
+      suggestCreateDTO.price ||
+      suggestCreateDTO.productCount ||
+      suggestCreateDTO.description
+    )
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.REQUEST_BODY_REQUIRED_INVALID));
+  }
+
   const location = image ? image.location : '';
 
   const data = await salespostService.createSuggest(
