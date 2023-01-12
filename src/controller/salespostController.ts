@@ -9,7 +9,7 @@ import { salespostService } from '../service';
 
 const salespostCreate = async (req: Request, res: Response) => {
   const { mainImage, certifications } = req.files as any;
-
+  const salesPostCreateDTO: CreateSalespostDTO = req.body;
   if (!mainImage || !certifications) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
   }
@@ -19,7 +19,23 @@ const salespostCreate = async (req: Request, res: Response) => {
   const locations = certifications.map((file: { location: any }) => file.location);
 
   const { userId } = res.locals; // jwt로 userId 얻기
-  const salesPostCreateDTO: CreateSalespostDTO = req.body;
+
+  if (
+    !(
+      salesPostCreateDTO.salesOption === 'BULK' || salesPostCreateDTO.salesOption === 'BULK_PARTIAL'
+    )
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SALES_OPTION_INVALID));
+  }
+
+  if (
+    !(
+      salesPostCreateDTO.priceOption === 'PRICE_OFFER' ||
+      salesPostCreateDTO.priceOption === 'DESIGNATED_PRICE'
+    )
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PRICE_OPTION_INVALID));
+  }
 
   const salespost = await salespostService.createSalespost(
     userId,

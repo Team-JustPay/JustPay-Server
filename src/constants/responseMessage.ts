@@ -101,4 +101,6 @@ export default {
   SHIPPING_OPTION_INVALID:
     'shippingOption이 유효하지 않습니다.(일반우편, 준등기, 우체국택배, GS택배, CU택배)',
   REQUEST_BODY_REQUIRED_INVALID: 'request body에 필요한 값이 없습니다.',
+  SALES_OPTION_INVALID: 'salesOption이 유효하지 않습니다.(BULK, BULK_PARTIAL)',
+  PRICE_OPTION_INVALID: 'priceOption이 유효하지 않습니다.(PRICE_OFFER, DESIGNATED_PRICE)',
 };
