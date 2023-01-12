@@ -64,6 +64,21 @@ describe('users 라우터 테스트', ()=>{
       .send(userInfo)
       .expect(204)
     });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .put('/users/my/info')
+      .set('Content-Type', 'application/json')
+      .send(userInfo)
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .put('/users/my/info')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer differentToken`)
+      .send(userInfo)
+      .expect(401)
+    });
   });
   
   describe('프로필 정보 조회 [GET] ~/users/:userId', () => {
