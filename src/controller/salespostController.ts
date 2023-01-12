@@ -38,8 +38,13 @@ const salespostCreate = async (req: Request, res: Response) => {
   ) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.REQUEST_BODY_REQUIRED_INVALID));
   } // description은 빈 상태로 올 수 있으니 제외
+
+  if (typeof salesPostCreateDTO.shippingOptions === 'string') {
+    const option = salesPostCreateDTO.shippingOptions;
+    salesPostCreateDTO.shippingOptions = [option];
+  }
+
   for (const option of salesPostCreateDTO.shippingOptions) {
-    console.log(option);
     if (
       !(
         option === '일반우편' ||
@@ -119,7 +124,6 @@ const createSuggest = async (req: Request, res: Response) => {
   if (!data) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CREATE_SUGGEST_FAIL));
   }
-
   return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_SUGGEST_SUCCESS, data));
 };
 
