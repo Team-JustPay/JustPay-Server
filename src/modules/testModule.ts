@@ -23,12 +23,6 @@ const createTestUser = async () => {
 };
 
 const deleteTestUser = async (userId: number) => {
-  await prisma.shippingInfo.delete({
-    where: {
-      userId: userId,
-    },
-  });
-
   const testUser = await prisma.user.delete({
     where: {
       id: userId,
@@ -39,12 +33,6 @@ const deleteTestUser = async (userId: number) => {
 };
 
 const deleteTestSalesPost = async (salespostId: number) => {
-  await prisma.certification.deleteMany({
-    where: {
-      salesPostId: salespostId,
-    },
-  });
-
   await prisma.salesPost.delete({
     where: {
       id: salespostId,

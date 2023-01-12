@@ -1,6 +1,8 @@
 import { SuggestCreateDTO } from '../interfaces/salespost/suggestCreateDTO';
 import { UserInfoDTO } from '../interfaces/user/userUpdateDTO';
 
+import { CreateSalespostDTO } from './../interfaces/salespost/createSalespostDTO';
+
 const suggest: SuggestCreateDTO = {
   price: 20000,
   purchaseOption: 'BULK',
@@ -35,4 +37,14 @@ const userInfo: UserInfoDTO = {
   },
 };
 
-module.exports = { suggest, userInfo };
+const salesPost: CreateSalespostDTO = {
+  productCount: '4',
+  salesOption: 'BULK',
+  priceOption: 'PRICE_OFFER',
+  price: '10000',
+  certificationWord: '테스트',
+  description: '테스트',
+  shippingOptions: ['CU택배', 'GS택배'],
+};
+
+module.exports = { suggest, userInfo, salesPost };

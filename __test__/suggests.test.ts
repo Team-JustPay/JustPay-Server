@@ -2,21 +2,29 @@ const request = require('supertest');
 import { salespostService } from '../src/service';
 import jwtHandler from '../src/modules/jwtHandler';
 
-const {suggest} = require('../src/db/data.ts');
+const {suggest, salesPost} = require('../src/db/data.ts');
+const {deleteTestSalesPost} = require('../src/modules/testModule.ts');
 const app = require('../src/server.ts');
 let server = app.listen(4000);
 
 let token; 
-let suggestForTest;
+let suggestForTest, salesPostForTest;
 
 afterAll(async () => {
+  await deleteTestSalesPost(+salesPostForTest.id);
   await server.close();
 });
 
 beforeAll(async () => {
+  salesPostForTest = await salespostService.createSalespost(
+    4,
+    'image',
+    ['dnksfl','dkjfs'],
+    salesPost
+  )
   suggestForTest = await salespostService.createSuggest(
     4,
-    2,
+    salesPostForTest.id,
     suggest,
     '',
   );
