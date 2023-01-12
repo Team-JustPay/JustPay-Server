@@ -10,15 +10,6 @@ import { salespostService } from '../service';
 const salespostCreate = async (req: Request, res: Response) => {
   const { mainImage, certifications } = req.files as any;
   const salesPostCreateDTO: CreateSalespostDTO = req.body;
-  if (!mainImage || !certifications) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
-  }
-
-  const image = mainImage[0];
-  const { location } = image;
-  const locations = certifications.map((file: { location: any }) => file.location);
-
-  const { userId } = res.locals; // jwt로 userId 얻기
 
   if (
     !(
@@ -36,6 +27,22 @@ const salespostCreate = async (req: Request, res: Response) => {
   ) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PRICE_OPTION_INVALID));
   }
+
+  if (
+    !mainImage ||
+    !certifications ||
+    !salesPostCreateDTO.productCount ||
+    !salesPostCreateDTO.price ||
+    !salesPostCreateDTO.certificationWord
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
+  } // description은 빈 상태로 올 수 있으니 제외
+
+  const image = mainImage[0];
+  const { location } = image;
+  const locations = certifications.map((file: { location: any }) => file.location);
+
+  const { userId } = res.locals; // jwt로 userId 얻기
 
   const salespost = await salespostService.createSalespost(
     userId,
