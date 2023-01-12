@@ -5,6 +5,7 @@ import { notificationMessages } from '../constants/notification';
 import { fail, success } from '../constants/response';
 import existCheck from '../modules/existCheck';
 import createNotification from '../modules/notification';
+import sendSlackMessage from '../modules/slack';
 import { suggestService } from '../service';
 
 const getShippingInfo = async (req: Request, res: Response) => {
@@ -47,6 +48,7 @@ const deleteSuggest = async (req: Request, res: Response) => {
       notificationMessages.SELL_SUGGEST_CANCEL,
     );
     if (!notification) {
+      sendSlackMessage(rm.INTERNAL_SERVER_ERROR);
       return res
         .status(sc.INTERNAL_SERVER_ERROR)
         .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
@@ -59,6 +61,7 @@ const deleteSuggest = async (req: Request, res: Response) => {
       notificationMessages.PURCHASE_SUGGEST_DENY,
     );
     if (!notification) {
+      sendSlackMessage(rm.INTERNAL_SERVER_ERROR);
       return res
         .status(sc.INTERNAL_SERVER_ERROR)
         .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
@@ -114,6 +117,7 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
     notificationMessages.PURCHASE_INVOICE_NUMBER_INPUT_COMPLETE,
   );
   if (!notification) {
+    sendSlackMessage(rm.INTERNAL_SERVER_ERROR);
     return res
       .status(sc.INTERNAL_SERVER_ERROR)
       .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
@@ -153,6 +157,7 @@ const updateStatus = async (req: Request, res: Response) => {
         notificationMessages.SELL_PAYMENT_COMPLETE,
       );
       if (!notification) {
+        sendSlackMessage(rm.INTERNAL_SERVER_ERROR);
         return res
           .status(sc.INTERNAL_SERVER_ERROR)
           .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
@@ -182,6 +187,7 @@ const updateStatus = async (req: Request, res: Response) => {
   );
 
   if (!notification) {
+    sendSlackMessage(rm.INTERNAL_SERVER_ERROR);
     return res
       .status(sc.INTERNAL_SERVER_ERROR)
       .send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
