@@ -93,4 +93,14 @@ export default {
   USER_ID_NOT_EXIST: 'userId가 없습니다.',
 
   PARAM_TRUE_FALSE_UNVALID: '파라미터가 true, false가 아닙니다.',
+  INVOICE_DEADLINE_INVALID: 'status는 1인 경우만 invoiceDeadline 필요',
+  PRICE_NOT_EXIST: 'price가 없습니다.',
+  INVOICE_NUMBER_NOT_EXIST: 'invoiceNumber가 없습니다.',
+
+  PURCHASE_OPTION_INVALID: 'purchaseOption이 유효하지 않습니다.(BULK, PARTIAL)',
+  SHIPPING_OPTION_INVALID:
+    'shippingOption이 유효하지 않습니다.(일반우편, 준등기, 우체국택배, GS택배, CU택배)',
+  REQUEST_BODY_REQUIRED_INVALID: 'request body에 필요한 값이 없습니다.',
+  SALES_OPTION_INVALID: 'salesOption이 유효하지 않습니다.(BULK, BULK_PARTIAL)',
+  PRICE_OPTION_INVALID: 'priceOption이 유효하지 않습니다.(PRICE_OFFER, DESIGNATED_PRICE)',
 };

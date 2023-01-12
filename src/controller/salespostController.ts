@@ -9,7 +9,7 @@ import { salespostService } from '../service';
 
 const salespostCreate = async (req: Request, res: Response) => {
   const { mainImage, certifications } = req.files as any;
-
+  const salesPostCreateDTO: CreateSalespostDTO = req.body;
   if (!mainImage || !certifications) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
   }
@@ -19,7 +19,23 @@ const salespostCreate = async (req: Request, res: Response) => {
   const locations = certifications.map((file: { location: any }) => file.location);
 
   const { userId } = res.locals; // jwt로 userId 얻기
-  const salesPostCreateDTO: CreateSalespostDTO = req.body;
+
+  if (
+    !(
+      salesPostCreateDTO.salesOption === 'BULK' || salesPostCreateDTO.salesOption === 'BULK_PARTIAL'
+    )
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SALES_OPTION_INVALID));
+  }
+
+  if (
+    !(
+      salesPostCreateDTO.priceOption === 'PRICE_OFFER' ||
+      salesPostCreateDTO.priceOption === 'DESIGNATED_PRICE'
+    )
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PRICE_OPTION_INVALID));
+  }
 
   const salespost = await salespostService.createSalespost(
     userId,
@@ -44,7 +60,31 @@ const createSuggest = async (req: Request, res: Response) => {
   }
 
   const suggestCreateDTO: SuggestCreateDTO = req.body;
+  if (
+    suggestCreateDTO.purchaseOption &&
+    !(suggestCreateDTO.purchaseOption === 'BULK' || suggestCreateDTO.purchaseOption === 'PARTIAL')
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PURCHASE_OPTION_INVALID));
+  }
+
+  if (
+    !(
+      suggestCreateDTO.shippingOption === '일반우편' ||
+      suggestCreateDTO.shippingOption === '준등기' ||
+      suggestCreateDTO.shippingOption === '우체국택배' ||
+      suggestCreateDTO.shippingOption === 'GS택배' ||
+      suggestCreateDTO.shippingOption === 'CU택배'
+    )
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SHIPPING_OPTION_INVALID));
+  }
+
+  if (!suggestCreateDTO.price || !suggestCreateDTO.productCount) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.REQUEST_BODY_REQUIRED_INVALID));
+  }
+
   const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
+
   const location = image ? image.location : '';
 
   const data = await salespostService.createSuggest(
