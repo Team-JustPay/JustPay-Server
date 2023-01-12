@@ -26,4 +26,16 @@ const checksalesPostExist = async (salespostId: number) => {
   return isExist;
 };
 
-export default { checkSuggestExist, checksalesPostExist };
+const checkUserExist = async (userId: number) => {
+  const num = await prisma.user.count({
+    where: {
+      id: userId,
+    },
+  });
+
+  const isExist = num > 0 ? true : false;
+
+  return isExist;
+};
+
+export default { checkSuggestExist, checksalesPostExist, checkUserExist };

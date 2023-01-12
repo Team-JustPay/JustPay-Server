@@ -39,7 +39,7 @@ model Notification {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ShippingInfo {
@@ -53,7 +53,7 @@ model ShippingInfo {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   userId        Int      @unique
-  user          User     @relation(fields: [userId], references: [id])
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model SalesPost {
@@ -71,7 +71,7 @@ model SalesPost {
   priceOption       String            @db.VarChar(100)
   certifications    Certification[]
   purchaseSuggests  PurchaseSuggest[]
-  sellor            User              @relation(fields: [sellorId], references: [id])
+  sellor            User              @relation(fields: [sellorId], references: [id], onDelete: Cascade)
   ShippingOptions   ShippingOption[]  @relation("SalesPostToShippingOption")
 }
 
@@ -81,7 +81,7 @@ model Certification {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   salesPostId Int
-  salespost   SalesPost @relation(fields: [salesPostId], references: [id])
+  salespost   SalesPost @relation(fields: [salesPostId], references: [id], onDelete: Cascade)
 }
 
 model ShippingOption {
@@ -107,7 +107,7 @@ model PurchaseSuggest {
   shippingOptionId Int
   purchaseOption   String         @db.VarChar(100)
   invoiceDeadline  DateTime?      @db.Date
-  salesPost        SalesPost      @relation(fields: [salesPostId], references: [id])
-  shippingOption   ShippingOption @relation(fields: [shippingOptionId], references: [id])
-  suggester        User           @relation(fields: [suggesterId], references: [id])
+  salesPost        SalesPost      @relation(fields: [salesPostId], references: [id], onDelete: Cascade)
+  shippingOption   ShippingOption @relation(fields: [shippingOptionId], references: [id], onDelete: Cascade)
+  suggester        User           @relation(fields: [suggesterId], references: [id], onDelete: Cascade)
 }
