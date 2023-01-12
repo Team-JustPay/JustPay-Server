@@ -30,6 +30,29 @@ describe('users 라우터 테스트', ()=>{
       .expect(200)
       .expect('Content-Type', /json/);
     });
+    test('400 - 파라미터가 true, false가 아닙니다', async () => {
+      await request(app)
+      .get(`/users/my/info`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .query({addressSplit: 'something'})
+      .expect(400)
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .get(`/users/my/info`)
+      .set('Content-Type', 'application/json')
+      .query({addressSplit: 'something'})
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .get(`/users/my/info`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer differentToken`)
+      .query({addressSplit: 'something'})
+      .expect(401)
+    });
   });
   
   describe('내 정보 수정 [PUT] ~/users/my/info', () => {
@@ -51,6 +74,12 @@ describe('users 라우터 테스트', ()=>{
       .expect(200)
       .expect('Content-Type', /json/);
     });
+    test('404 - userId가 없습니다', async () => {
+      await request(app)
+      .get(`/users/-1`)
+      .set('Content-Type', 'application/json',)
+      .expect(404)
+    });
   });
   
   describe('내 알리미 조회 [GET] ~/users/my/notifications', () => {
@@ -61,6 +90,19 @@ describe('users 라우터 테스트', ()=>{
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .expect('Content-Type', /json/);
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .get(`/users/my/notifications`)
+      .set('Content-Type', 'application/json')
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .get(`/users/my/notifications`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer differentToken`)
+      .expect(401)
     });
   });
 
@@ -74,6 +116,29 @@ describe('users 라우터 테스트', ()=>{
       .expect(200)
       .expect('Content-Type', /json/);
     });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .get('/users/my/suggests')
+      .set('Content-Type', 'application/json')
+      .query({isPurchased: 'false'})
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .get('/users/my/suggests')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer differentToken`)
+      .query({isPurchased: 'false'})
+      .expect(401)
+    });
+    test('400 - 파라미터가 true, false가 아닙니다', async () => {
+      await request(app)
+      .get('/users/my/suggests')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
+      .query({isPurchased: 'something'})
+      .expect(400)
+    });
   });
 
   describe('내 판매중 정보 조회 [GET] ~/users/my/salesposts?isSaled={isSaled}', () => {
@@ -85,6 +150,29 @@ describe('users 라우터 테스트', ()=>{
       .query({isSaled: 'false'})
       .expect(200)
       .expect('Content-Type', /json/);
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .get('/users/my/salesposts')
+      .set('Content-Type', 'application/json')
+      .query({isSaled: 'false'})
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .get('/users/my/salesposts')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer differentToken`)
+      .query({isSaled: 'false'})
+      .expect(401)
+    });
+    test('400 - 파라미터가 true, false가 아닙니다', async () => {
+      await request(app)
+      .get('/users/my/salesposts')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
+      .query({isSaled: 'something'})
+      .expect(400)
     });
   });
   
