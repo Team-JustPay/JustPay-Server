@@ -2,13 +2,17 @@ import { Request, Response } from 'express';
 
 import { rm, sc } from '../constants';
 import { fail, success } from '../constants/response';
+import existCheck from '../modules/existCheck';
 import { userService } from '../service';
 
 const getUserInfo = async (req: Request, res: Response) => {
   const { userId } = req.params;
-  if (!userId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.USER_ID_GET_FAIL));
+
+  const userExist = await existCheck.checkUserExist(+userId);
+  if (!userExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.USER_ID_NOT_EXIST));
   }
+
   const data = await userService.getUserInfo(+userId);
   if (!data) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.USER_INFO_GET_FAIL));
