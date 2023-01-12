@@ -197,6 +197,43 @@ describe('suggests 라우터 테스트', ()=>{
       })
       .expect(204)
     });
+    test('404 - suggestId가 없습니다', async () => {
+      await request(app)
+      .patch(`/suggests/-1/price`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        price: 30000,
+      })
+      .expect(404)
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .patch(`/suggests/${suggestForTest.id}/price`)
+      .set('Content-Type', 'application/json',)
+      .send({
+        price: 30000,
+      })
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .patch(`/suggests/${suggestForTest.id}/price`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer differentToken`)
+      .send({
+        price: 30000,
+      })
+      .expect(401)
+    });
+    test('400 - price가 없습니다.', async () => {
+      await request(app)
+      .patch(`/suggests/${suggestForTest.id}/price`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .send({})
+      .expect(400)
+    });
   });  
 
   describe('운송장 정보 입력 [PATCH] ~/suggests/:suggestId/invoice', () => {
@@ -209,6 +246,43 @@ describe('suggests 라우터 테스트', ()=>{
         invoiceNumber: "1234-5678-9123",
       })
       .expect(204)
+    });
+    test('404 - suggestId가 없습니다', async () => {
+      await request(app)
+      .patch(`/suggests/-1/invoice`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        invoiceNumber: "1234-5678-9123",
+      })
+      .expect(404)
+    });
+    test('401 - 토큰 값이 없습니다', async () => {
+      await request(app)
+      .patch(`/suggests/${suggestForTest.id}/invoice`)
+      .set('Content-Type', 'application/json',)
+      .send({
+        invoiceNumber: "1234-5678-9123",
+      })
+      .expect(401)
+    });
+    test('401 - 유효하지 않은 토큰입니다', async () => {
+      await request(app)
+      .patch(`/suggests/${suggestForTest.id}/invoice`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer differentToken`)
+      .send({
+        invoiceNumber: "1234-5678-9123",
+      })
+      .expect(401)
+    });
+    test('400 - price가 없습니다.', async () => {
+      await request(app)
+      .patch(`/suggests/${suggestForTest.id}/invoice`)
+      .set('Content-Type', 'application/json',)
+      .set('Authorization', `Bearer ${token}`)
+      .send({})
+      .expect(400)
     });
   });
 
