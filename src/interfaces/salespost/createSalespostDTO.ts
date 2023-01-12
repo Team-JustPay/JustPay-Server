@@ -5,5 +5,5 @@ export interface CreateSalespostDTO {
   price: string;
   certificationWord: string;
   description: string;
-  shippingOptions: string;
+  shippingOptions: string | string[];
 }

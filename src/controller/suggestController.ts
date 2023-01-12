@@ -3,14 +3,18 @@ import { Request, Response } from 'express';
 import { rm, sc } from '../constants';
 import { notificationMessages } from '../constants/notification';
 import { fail, success } from '../constants/response';
+import existCheck from '../modules/existCheck';
 import createNotification from '../modules/notification';
 import { suggestService } from '../service';
 
 const getShippingInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SHIPPING_INFO_FAIL));
+
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
+
   const data = await suggestService.getShippingInfo(+suggestId);
   if (!data) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SHIPPING_INFO_FAIL));
@@ -23,9 +27,11 @@ const deleteSuggest = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { suggestId } = req.params;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.DELETE_SUGGEST_FAIL));
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
+
   const sellorId = await suggestService.getSellorId(+suggestId);
   const data = await suggestService.deleteSuggest(+suggestId);
 
@@ -66,8 +72,13 @@ const raisePrice = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
   const { price } = req.body;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.RAISE_SUGGEST_PRICE_FAIL));
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
+  }
+
+  if (!price) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PRICE_NOT_EXIST));
   }
 
   const data = await suggestService.raisePrice(+suggestId, price);
@@ -83,8 +94,13 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
   const { invoiceNumber } = req.body;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_INVOICE_NUMBER_FAIL));
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
+  }
+
+  if (!invoiceNumber) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.INVOICE_NUMBER_NOT_EXIST));
   }
 
   const data = await suggestService.updateInvoiceNumber(+suggestId, invoiceNumber);
@@ -111,13 +127,18 @@ const updateStatus = async (req: Request, res: Response) => {
   const { status, invoiceDeadline } = req.body;
   const { userId } = res.locals;
 
-  if (!status) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
+  }
+
+  if (!(status in [0, 1, 2, 3])) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.STATUS_NUMBER_ERROR));
   }
 
   if (status !== 1) {
     if (invoiceDeadline) {
-      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.INVOICE_DEADLINE_INVALID));
     }
     const data = await suggestService.updateStatus(+suggestId, status);
 
@@ -141,7 +162,7 @@ const updateStatus = async (req: Request, res: Response) => {
   }
 
   if (!invoiceDeadline) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.UPDATE_SUGGEST_STATUS_FAIL));
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.INVOICE_DEADLINE_INVALID));
   }
   const data = await suggestService.updateStatusInvoice(
     +suggestId,
@@ -172,8 +193,9 @@ const updateStatus = async (req: Request, res: Response) => {
 const getSuggestPaymentInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_PAYMENT_INFO_FAIL));
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
 
   const data = await suggestService.getSuggestPaymentInfo(+suggestId);
@@ -188,8 +210,9 @@ const getSuggestDetail = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
   const { userId } = res.locals;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_DETAIL_FAIL));
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
 
   const data = await suggestService.getSuggestDetail(+suggestId, userId);
@@ -203,8 +226,9 @@ const getSuggestDetail = async (req: Request, res: Response) => {
 const getInvoiceInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_INVOICE_INFO_FAIL));
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
 
   const data = await suggestService.getInvoiceInfo(+suggestId);
