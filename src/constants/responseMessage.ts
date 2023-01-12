@@ -89,4 +89,5 @@ export default {
   GET_SHIPPING_INFO_FAIL: '배송 정보 조회 실패',
 
   SUGGEST_ID_NOT_EXIST: 'suggestId가 없습니다.',
+  SALESPOST_ID_NOT_EXIST: 'salespostId가 없습니다.',
 };

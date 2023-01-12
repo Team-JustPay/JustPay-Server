@@ -3,14 +3,14 @@ import { Request, Response } from 'express';
 import { rm, sc } from '../constants';
 import { notificationMessages } from '../constants/notification';
 import { fail, success } from '../constants/response';
-import checkSuggestExist from '../modules/existCheck';
+import existCheck from '../modules/existCheck';
 import createNotification from '../modules/notification';
 import { suggestService } from '../service';
 
 const getShippingInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
@@ -27,7 +27,7 @@ const deleteSuggest = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { suggestId } = req.params;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
@@ -72,7 +72,7 @@ const raisePrice = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
   const { price } = req.body;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
@@ -90,7 +90,7 @@ const updateInvoiceNumber = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
   const { invoiceNumber } = req.body;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
@@ -119,7 +119,7 @@ const updateStatus = async (req: Request, res: Response) => {
   const { status, invoiceDeadline } = req.body;
   const { userId } = res.locals;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
@@ -185,7 +185,7 @@ const updateStatus = async (req: Request, res: Response) => {
 const getSuggestPaymentInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
@@ -202,7 +202,7 @@ const getSuggestDetail = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
   const { userId } = res.locals;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
@@ -218,7 +218,7 @@ const getSuggestDetail = async (req: Request, res: Response) => {
 const getInvoiceInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
 
-  const suggestExist = await checkSuggestExist(+suggestId);
+  const suggestExist = await existCheck.checkSuggestExist(+suggestId);
   if (!suggestExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
