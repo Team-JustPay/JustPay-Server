@@ -77,6 +77,7 @@ export default {
   CERTIFICATION_GET_FAIL: '인증사진 조회 실패',
   USER_ID_GET_FAIL: '유저 아이디 조회 실패',
 
+  CREATE_SALESPOST_SUCCESS: 'salespost 생성 성공',
   CREATE_SALESPOST_FAIL: 'salespost 생성 실패',
   SALESPOST_ID_GET_FAIL: 'salespost 아이디 조회 실패',
 

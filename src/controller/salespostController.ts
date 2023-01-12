@@ -74,7 +74,7 @@ const salespostCreate = async (req: Request, res: Response) => {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.CREATE_SALESPOST_FAIL));
   }
 
-  return res.status(201).json({ status: 201, message: '판매글 생성 성공', data: salespost });
+  return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_SALESPOST_SUCCESS, salespost));
 };
 
 const createSuggest = async (req: Request, res: Response) => {
