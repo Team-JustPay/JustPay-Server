@@ -61,6 +61,7 @@ const createSuggest = async (req: Request, res: Response) => {
 
   const suggestCreateDTO: SuggestCreateDTO = req.body;
   if (
+    suggestCreateDTO.purchaseOption &&
     !(suggestCreateDTO.purchaseOption === 'BULK' || suggestCreateDTO.purchaseOption === 'PARTIAL')
   ) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PURCHASE_OPTION_INVALID));
@@ -78,18 +79,11 @@ const createSuggest = async (req: Request, res: Response) => {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SHIPPING_OPTION_INVALID));
   }
 
-  const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
-
-  if (
-    !(
-      image ||
-      suggestCreateDTO.price ||
-      suggestCreateDTO.productCount ||
-      suggestCreateDTO.description
-    )
-  ) {
+  if (!suggestCreateDTO.price || !suggestCreateDTO.productCount) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.REQUEST_BODY_REQUIRED_INVALID));
   }
+
+  const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
 
   const location = image ? image.location : '';
 
