@@ -10,15 +10,6 @@ import { salespostService } from '../service';
 const salespostCreate = async (req: Request, res: Response) => {
   const { mainImage, certifications } = req.files as any;
   const salesPostCreateDTO: CreateSalespostDTO = req.body;
-  if (!mainImage || !certifications) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.NO_IMAGE));
-  }
-
-  const image = mainImage[0];
-  const { location } = image;
-  const locations = certifications.map((file: { location: any }) => file.location);
-
-  const { userId } = res.locals; // jwt로 userId 얻기
 
   if (
     !(
@@ -36,6 +27,37 @@ const salespostCreate = async (req: Request, res: Response) => {
   ) {
     return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.PRICE_OPTION_INVALID));
   }
+
+  if (
+    !mainImage ||
+    !certifications ||
+    !salesPostCreateDTO.productCount ||
+    !salesPostCreateDTO.price ||
+    !salesPostCreateDTO.certificationWord ||
+    !salesPostCreateDTO.shippingOptions
+  ) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.REQUEST_BODY_REQUIRED_INVALID));
+  } // description은 빈 상태로 올 수 있으니 제외
+  for (const option of salesPostCreateDTO.shippingOptions) {
+    console.log(option);
+    if (
+      !(
+        option === '일반우편' ||
+        option === '준등기' ||
+        option === '우체국택배' ||
+        option === 'GS택배' ||
+        option === 'CU택배'
+      )
+    ) {
+      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SHIPPING_OPTION_INVALID));
+    }
+  }
+
+  const image = mainImage[0];
+  const { location } = image;
+  const locations = certifications.map((file: { location: any }) => file.location);
+
+  const { userId } = res.locals; // jwt로 userId 얻기
 
   const salespost = await salespostService.createSalespost(
     userId,
