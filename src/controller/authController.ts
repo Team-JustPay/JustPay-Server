@@ -7,8 +7,14 @@ import sendSlackMessage from '../modules/slack';
 
 //* 로그인
 const signInUser = async (req: Request, res: Response) => {
+  const { oauthToken } = req.body;
+
+  if (!(+oauthToken === 4 || +oauthToken === 10)) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SIGNIN_FAIL));
+  }
+
   try {
-    const userId = 4; // 더미 유저의 id
+    const userId = +oauthToken; // 더미 유저의 id
     const accessToken = jwtHandler.sign(userId);
     const result = {
       id: userId,
