@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { rm, sc } from '../constants';
 import { notificationMessages } from '../constants/notification';
 import { fail, success } from '../constants/response';
+import checkSuggestExist from '../modules/existCheck';
 import createNotification from '../modules/notification';
 import { suggestService } from '../service';
 
@@ -172,8 +173,9 @@ const updateStatus = async (req: Request, res: Response) => {
 const getSuggestPaymentInfo = async (req: Request, res: Response) => {
   const { suggestId } = req.params;
 
-  if (!suggestId) {
-    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.GET_SUGGEST_PAYMENT_INFO_FAIL));
+  const suggestExist = await checkSuggestExist(+suggestId);
+  if (!suggestExist) {
+    return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SUGGEST_ID_NOT_EXIST));
   }
 
   const data = await suggestService.getSuggestPaymentInfo(+suggestId);

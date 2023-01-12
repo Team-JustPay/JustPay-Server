@@ -87,4 +87,6 @@ export default {
   SHIPPING_INFO_NOT_EXIST: 'request body에  shippingInfo가 없습니다.',
   USER_INFO_CHANGE_FAIL: '유저 정보 변경 실패',
   GET_SHIPPING_INFO_FAIL: '배송 정보 조회 실패',
+
+  SUGGEST_ID_NOT_EXIST: 'suggestId가 없습니다.',
 };
