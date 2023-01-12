@@ -38,7 +38,7 @@ const createSuggest = async (req: Request, res: Response) => {
   const { userId } = res.locals;
   const { salespostId } = req.params;
 
-  const salespostExist = await existCheck.checkSuggestExist(+salespostId);
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
   if (!salespostExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
   }
@@ -74,7 +74,7 @@ const createCertificationWord = async (req: Request, res: Response) => {
 const getCertifications = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
 
-  const salespostExist = await existCheck.checkSuggestExist(+salespostId);
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
   if (!salespostExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
   }
@@ -89,7 +89,7 @@ const getCertifications = async (req: Request, res: Response) => {
 const statusChange = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
 
-  const salespostExist = await existCheck.checkSuggestExist(+salespostId);
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
   if (!salespostExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
   }
@@ -112,7 +112,7 @@ const getPurchaseList = async (req: Request, res: Response) => {
   const { isMatched } = req.query;
   const { userId } = res.locals;
 
-  const salespostExist = await existCheck.checkSuggestExist(+salespostId);
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
   if (!salespostExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
   }
@@ -134,7 +134,7 @@ const getOneSalespost = async (req: Request, res: Response) => {
   const { salespostId } = req.params;
   const { userId } = res.locals;
 
-  const salespostExist = await existCheck.checkSuggestExist(+salespostId);
+  const salespostExist = await existCheck.checksalesPostExist(+salespostId);
   if (!salespostExist) {
     return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.SALESPOST_ID_NOT_EXIST));
   }
